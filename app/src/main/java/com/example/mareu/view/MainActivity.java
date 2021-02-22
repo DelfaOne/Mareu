@@ -1,4 +1,4 @@
-package com.example.mareu;
+package com.example.mareu.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -9,15 +9,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.mareu.MeetingViewModel;
+import com.example.mareu.ViewModelFactory;
+import com.example.mareu.databinding.ActivityMainBinding;
+
 public class MainActivity extends AppCompatActivity {
+
+    private ActivityMainBinding vb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        vb = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = vb.getRoot();
+        setContentView(view);
 
-        TextView myTxtView = findViewById(R.id.txt_view);
-        Button myBtn = findViewById(R.id.btn);
+        TextView myTxtView = vb.txtView;
+        Button myBtn = vb.btn;
 
         MeetingViewModel meetingViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance())
                 .get(MeetingViewModel.class);
