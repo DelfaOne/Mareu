@@ -1,4 +1,4 @@
-package com.example.mareu;
+package com.example.mareu.viewmodel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

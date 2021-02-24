@@ -8,16 +8,16 @@ import java.util.List;
 
 public abstract class DummyMeetingGenerator {
 
-    public static List<Meeting> DUMMY_MEETING = Arrays.asList(
-            new Meeting(1, "Réunion A", "14h00", "maxime@lamzone, fadel@foudi"),
-            new Meeting(1, "Réunion A", "14h00", "maxime@lamzone, fadel@foudi"),
-            new Meeting(1, "Réunion A", "14h00", "maxime@lamzone, fadel@foudi"),
-            new Meeting(1, "Réunion A", "14h00", "maxime@lamzone, fadel@foudi"),
-            new Meeting(1, "Réunion A", "14h00", "maxime@lamzone, fadel@foudi"),
-            new Meeting(1, "Réunion A", "14h00", "maxime@lamzone, fadel@foudi")
+   /* public static List<Meeting> DUMMY_MEETING = Arrays.asList(
+            new Meeting(1, "Réunion A", lieu, "14h00", "maxime@lamzone, fadel@foudi"),
+            new Meeting(1, "Réunion A", lieu, "14h00", "maxime@lamzone, fadel@foudi"),
+            new Meeting(1, "Réunion A", lieu, "14h00", "maxime@lamzone, fadel@foudi"),
+            new Meeting(1, "Réunion A", lieu, "14h00", "maxime@lamzone, fadel@foudi"),
+            new Meeting(1, "Réunion A", lieu, "14h00", "maxime@lamzone, fadel@foudi"),
+            new Meeting(1, "Réunion A", lieu, "14h00", "maxime@lamzone, fadel@foudi")
     );
-
+*/
     public static List<Meeting> getDummyMeeting() {
-        return new ArrayList<>(DUMMY_MEETING);
+        return new ArrayList<>();
     }
 }

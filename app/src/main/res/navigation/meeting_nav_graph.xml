@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/meeting_nav_graph"
+    app:startDestination="@id/fragmentListMeeting2">
+
+    <fragment
+        android:id="@+id/fragmentListMeeting2"
+        android:name="com.example.mareu.view.FragmentListMeeting"
+        android:label="FragmentListMeeting" />
+</navigation>
