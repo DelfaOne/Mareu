@@ -3,15 +3,16 @@ package com.example.mareu.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import com.example.mareu.DI.DI;
+import com.example.mareu.service.MeetingApiService;
 import java.util.List;
 
 public class SingleStringRepo {
 
     private MutableLiveData<List<Meeting>> currentStringMutableLiveData = new MutableLiveData<>();
+    private MeetingApiService apiService = DI.getNeighbourApiService();
 
-    public void addNewMeeting() {
+    /*public void addNewMeeting() {
         List<Meeting> meetingList = currentStringMutableLiveData.getValue();
         if (meetingList == null) {
             meetingList = new ArrayList<>();
@@ -21,6 +22,10 @@ public class SingleStringRepo {
                 "Lille", LocalDateTime.now(),
                 "fadel"));
         currentStringMutableLiveData.setValue(meetingList);
+    }*/
+
+    public void fillData() {
+        currentStringMutableLiveData.setValue(apiService.getMeeting());
     }
 
     public LiveData<List<Meeting>> getCurrentStringLiveData() {

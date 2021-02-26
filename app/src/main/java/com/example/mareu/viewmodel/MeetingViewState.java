@@ -2,8 +2,6 @@ package com.example.mareu.viewmodel;
 
 import androidx.annotation.NonNull;
 
-import java.time.LocalDateTime;
-
 public class MeetingViewState {
     private final int id;
     @NonNull
@@ -23,6 +21,11 @@ public class MeetingViewState {
         this.participants = participants;
     }
 
+    @NonNull
+    public String getLieu() {
+        return lieu;
+    }
+
     public int getId() {
         return id;
     }
@@ -38,4 +41,5 @@ public class MeetingViewState {
     public String getParticipants() {
         return participants;
     }
+
 }

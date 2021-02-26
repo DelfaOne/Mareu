@@ -13,18 +13,11 @@ import java.util.List;
 
 public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecyclerViewAdapter.MeetingViewHolder> {
 
-
-    static class MeetingViewHolder extends RecyclerView.ViewHolder {
-
-        private ItemListMeetingBinding itemBinding;
-
-        public MeetingViewHolder(ItemListMeetingBinding itemBinding) {
-            super(itemBinding.getRoot());
-            this.itemBinding = itemBinding;
-        }
-    }
-
     private List<MeetingViewState> meetingList;
+
+    public MeetingRecyclerViewAdapter(List<MeetingViewState> meetingList) {
+        this.meetingList = meetingList;
+    }
 
     public void submitList(List<MeetingViewState> items) {
         this.meetingList = items;
@@ -35,14 +28,15 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
     @Override
     public MeetingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_list_meeting, parent, false);
+                .inflate(R.layout.item_list_meeting, parent, false);
         return new MeetingViewHolder(ItemListMeetingBinding.bind(view));
     }
 
     @Override
     public void onBindViewHolder(@NonNull MeetingViewHolder holder, int position) {
         MeetingViewState meeting = meetingList.get(position);
-        holder.itemBinding.meetingTitle.setText(meeting.getReunionSubject());
+        holder.itemBinding.meetingTitle.setText(meeting.getReunionSubject() + " - " + meeting.getDate() + " - " + meeting.getLieu());
+        holder.itemBinding.meetingParticipants.setText(meeting.getParticipants());
     }
 
     @Override
@@ -52,6 +46,15 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
         } else {
             return 0;
         }
+    }
 
+    static class MeetingViewHolder extends RecyclerView.ViewHolder {
+
+        private ItemListMeetingBinding itemBinding;
+
+        public MeetingViewHolder(ItemListMeetingBinding itemBinding) {
+            super(itemBinding.getRoot());
+            this.itemBinding = itemBinding;
+        }
     }
 }

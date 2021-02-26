@@ -8,17 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mareu.DI.DI;
 import com.example.mareu.MeetingRecyclerViewAdapter;
-import com.example.mareu.repository.Meeting;
-import com.example.mareu.service.DummyMeetingApiService;
-import com.example.mareu.service.MeetingApiService;
 import com.example.mareu.viewmodel.MeetingViewModel;
 import com.example.mareu.viewmodel.MeetingViewState;
 import com.example.mareu.viewmodel.ViewModelFactory;
@@ -57,7 +51,7 @@ public class FragmentListMeeting extends Fragment {
 
         vb.btnClick.setOnClickListener(v -> meetingViewModel.onButtonPressed());
 
-        meetingViewModel.getVIewStateLiveData().observe(this, new Observer<List<MeetingViewState>>() {
+        meetingViewModel.getViewStateLiveData().observe(this, new Observer<List<MeetingViewState>>() {
                     @Override
                     public void onChanged(List<MeetingViewState> meetingViewStates) {
                         meetingRecyclerViewAdapter.submitList(meetingViewStates);

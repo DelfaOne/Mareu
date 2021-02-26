@@ -3,22 +3,22 @@ package com.example.mareu.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-
+import com.example.mareu.MeetingRecyclerViewAdapter;
 import com.example.mareu.repository.Meeting;
 import com.example.mareu.repository.SingleStringRepo;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MeetingViewModel extends ViewModel {
 
     private final SingleStringRepo singleStringRepo;
+    private MeetingRecyclerViewAdapter meetingRecyclerViewAdapter;
 
     public MeetingViewModel(SingleStringRepo singleStringRepo) {
         this.singleStringRepo = singleStringRepo;
     }
 
-    public LiveData<List<MeetingViewState>> getVIewStateLiveData() {
+    public LiveData<List<MeetingViewState>> getViewStateLiveData() {
         return Transformations.map(singleStringRepo.getCurrentStringLiveData(), meetings ->
                 map(meetings));
     }
@@ -33,12 +33,11 @@ public class MeetingViewModel extends ViewModel {
                     meeting.getDate().toString(),
                     meeting.getParticipants()
             ));
-
         }
         return results;
     }
 
     public void onButtonPressed() {
-        singleStringRepo.addNewMeeting();
+        singleStringRepo.fillData();
     }
 }
