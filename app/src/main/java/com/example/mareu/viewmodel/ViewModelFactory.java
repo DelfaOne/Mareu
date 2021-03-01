@@ -25,7 +25,6 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                 }
             }
         }
-
         return factory;
     }
 

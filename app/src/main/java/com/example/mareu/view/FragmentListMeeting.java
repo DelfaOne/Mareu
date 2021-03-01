@@ -10,7 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.MeetingRecyclerViewAdapter;
 import com.example.mareu.viewmodel.MeetingViewModel;
@@ -48,10 +50,11 @@ public class FragmentListMeeting extends Fragment {
     private void init() {
         MeetingViewModel meetingViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance())
                 .get(MeetingViewModel.class);
-
-        vb.btnClick.setOnClickListener(v -> meetingViewModel.onButtonPressed());
+        meetingViewModel.fillFakeData();
+        //vb.btnClick.setOnClickListener(v -> meetingViewModel.onButtonPressed());
 
         meetingViewModel.getViewStateLiveData().observe(this, new Observer<List<MeetingViewState>>() {
+
                     @Override
                     public void onChanged(List<MeetingViewState> meetingViewStates) {
                         meetingRecyclerViewAdapter.submitList(meetingViewStates);

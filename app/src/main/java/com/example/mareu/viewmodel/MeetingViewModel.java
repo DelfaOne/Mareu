@@ -12,7 +12,6 @@ import java.util.List;
 public class MeetingViewModel extends ViewModel {
 
     private final SingleStringRepo singleStringRepo;
-    private MeetingRecyclerViewAdapter meetingRecyclerViewAdapter;
 
     public MeetingViewModel(SingleStringRepo singleStringRepo) {
         this.singleStringRepo = singleStringRepo;
@@ -37,7 +36,8 @@ public class MeetingViewModel extends ViewModel {
         return results;
     }
 
-    public void onButtonPressed() {
+    public void fillFakeData() {
         singleStringRepo.fillData();
     }
+
 }

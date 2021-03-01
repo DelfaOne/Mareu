@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mareu.repository.Meeting;
+import com.example.mareu.viewmodel.MeetingViewState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class DummyMeetingApiService implements MeetingApiService{
     }
 
     @Override
-    public void deleteMeeting(Meeting meeting) {
+    public void deleteMeeting(MeetingViewState meeting) {
         meetingList.remove(meeting);
     }
 
