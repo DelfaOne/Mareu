@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DummyMeetingApiService implements MeetingApiService{
 
-    private List<Meeting> meetingList = DummyMeetingGenerator.getDummyMeeting();
+    private ArrayList<Meeting> meetingList = DummyMeetingGenerator.getDummyMeeting();
 
     @Override
     public List<Meeting> getMeeting() {
@@ -19,8 +19,16 @@ public class DummyMeetingApiService implements MeetingApiService{
     }
 
     @Override
-    public void deleteMeeting(MeetingViewState meeting) {
-        meetingList.remove(meeting);
+    public void deleteMeeting(int meetingId) {
+        Meeting match = null;
+        for (Meeting meeting: meetingList) {
+            if (meeting.getId() == meetingId) {
+                match = meeting;
+            }
+        }
+        if (match != null) {
+            meetingList.remove(match);
+        }
     }
 
     @Override

@@ -1,39 +1,40 @@
 package com.example.mareu;
-import android.content.Context;
+
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.databinding.ItemListMeetingBinding;
-import com.example.mareu.repository.Meeting;
 import com.example.mareu.viewmodel.MeetingViewState;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecyclerViewAdapter.MeetingViewHolder> {
 
-    private List<MeetingViewState> meetingList;
-    private OnMeetingListener onMeetingListener;
+    private final ArrayList<MeetingViewState> meetingList = new ArrayList<MeetingViewState>();
+    private final OnDeleteItem onDeleteItem;
 
-    public MeetingRecyclerViewAdapter(OnMeetingListener onMeetingListener) {
-        this.onMeetingListener = onMeetingListener;
+
+    public MeetingRecyclerViewAdapter(@NonNull OnDeleteItem onDeleteItem) {
+        this.onDeleteItem = onDeleteItem;
     }
 
     public void submitList(List<MeetingViewState> items) {
-        this.meetingList = items;
+        meetingList.clear();
+        meetingList.addAll(items);
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public MeetingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_list_meeting, parent, false);
-        return new MeetingViewHolder(ItemListMeetingBinding.bind(view));
+        ItemListMeetingBinding itemListMeetingBinding = ItemListMeetingBinding.inflate(LayoutInflater.from(parent.getContext()),
+                parent,
+                false);
+        return new MeetingViewHolder(itemListMeetingBinding);
     }
 
     @Override
@@ -41,25 +42,18 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
         MeetingViewState meeting = meetingList.get(position);
         holder.itemBinding.meetingTitle.setText(meeting.getReunionSubject() + " - " + meeting.getDate() + " - " + meeting.getLieu());
         holder.itemBinding.meetingParticipants.setText(meeting.getParticipants());
-        holder.itemBinding.meetingDeleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onMeetingListener.onBtnDeleteClick(meeting);
-            }
+        holder.itemBinding.meetingDeleteBtn.setOnClickListener(v -> {
+            onDeleteItem.deleteItem(meeting);
         });
     }
 
-    public interface OnMeetingListener {
-        void onBtnDeleteClick(MeetingViewState meetingViewState);
+    public interface OnDeleteItem {
+        void deleteItem(MeetingViewState meetingViewState);
     }
 
     @Override
     public int getItemCount() {
-        if (meetingList != null) {
-            return meetingList.size();
-        } else {
-            return 0;
-        }
+        return meetingList.size();
     }
 
     public MeetingViewState getMeetingAt(int position) {

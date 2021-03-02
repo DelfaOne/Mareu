@@ -1,6 +1,7 @@
 package com.example.mareu.viewmodel;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import com.example.mareu.MeetingRecyclerViewAdapter;
@@ -12,14 +13,17 @@ import java.util.List;
 public class MeetingViewModel extends ViewModel {
 
     private final SingleStringRepo singleStringRepo;
+    private final MutableLiveData<List<MeetingViewState>> _meetingViewStateLiveData = new MutableLiveData<>();
+    public final LiveData<List<MeetingViewState>> meetingViewStateLiveData = _meetingViewStateLiveData;
 
     public MeetingViewModel(SingleStringRepo singleStringRepo) {
         this.singleStringRepo = singleStringRepo;
     }
 
-    public LiveData<List<MeetingViewState>> getViewStateLiveData() {
-        return Transformations.map(singleStringRepo.getCurrentStringLiveData(), meetings ->
-                map(meetings));
+    public void loadData() {
+        List<Meeting> meetingList = singleStringRepo.getMeeting();
+        List<MeetingViewState> viewState = map(meetingList);
+        _meetingViewStateLiveData.setValue(viewState);
     }
 
     private List<MeetingViewState> map(List<Meeting> meetings) {
@@ -36,8 +40,8 @@ public class MeetingViewModel extends ViewModel {
         return results;
     }
 
-    public void fillFakeData() {
-        singleStringRepo.fillData();
+    public void deleteItem(MeetingViewState meetingViewState) {
+        singleStringRepo.deleteMeetingItem(meetingViewState);
+        loadData();
     }
-
 }

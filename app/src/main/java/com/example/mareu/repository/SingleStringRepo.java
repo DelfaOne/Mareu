@@ -5,30 +5,19 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.mareu.DI.DI;
 import com.example.mareu.service.MeetingApiService;
+import com.example.mareu.viewmodel.MeetingViewState;
+
 import java.util.List;
 
 public class SingleStringRepo {
 
-    private MutableLiveData<List<Meeting>> currentStringMutableLiveData = new MutableLiveData<>();
     private MeetingApiService apiService = DI.getNeighbourApiService();
 
-    /*public void addNewMeeting() {
-        List<Meeting> meetingList = currentStringMutableLiveData.getValue();
-        if (meetingList == null) {
-            meetingList = new ArrayList<>();
-        }
-        meetingList.add(new Meeting(meetingList.size(),
-                "subject " + meetingList.size(),
-                "Lille", LocalDateTime.now(),
-                "fadel"));
-        currentStringMutableLiveData.setValue(meetingList);
-    }*/
-
-    public void fillData() {
-        currentStringMutableLiveData.setValue(apiService.getMeeting());
+    public void deleteMeetingItem(MeetingViewState meetingViewState) {
+        apiService.deleteMeeting(meetingViewState.getId());
     }
 
-    public LiveData<List<Meeting>> getCurrentStringLiveData() {
-        return currentStringMutableLiveData;
+    public List<Meeting> getMeeting() {
+        return apiService.getMeeting();
     }
 }
