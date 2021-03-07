@@ -2,7 +2,11 @@ package com.example.mareu.viewmodel;
 
 import androidx.annotation.NonNull;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class MeetingViewState {
+
     private final int id;
     @NonNull
     private final String reunionSubject;
@@ -13,7 +17,7 @@ public class MeetingViewState {
     @NonNull
     private final String participants;
 
-    public MeetingViewState(int id, String reunionSubject, String lieu, String date, String participants) {
+    public MeetingViewState(@NonNull int id,@NonNull String reunionSubject,@NonNull String lieu,@NonNull String date,@NonNull String participants) {
         this.id = id;
         this.reunionSubject = reunionSubject;
         this.lieu = lieu;
@@ -35,6 +39,7 @@ public class MeetingViewState {
     }
 
     public String getDate() {
+        //return LocalDateTime.parse(this.date).toString();
         return date;
     }
 

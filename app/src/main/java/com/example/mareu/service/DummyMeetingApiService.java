@@ -1,10 +1,5 @@
 package com.example.mareu.service;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.mareu.repository.Meeting;
-import com.example.mareu.viewmodel.MeetingViewState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +27,6 @@ public class DummyMeetingApiService implements MeetingApiService{
     }
 
     @Override
-    public void addMeeting(Meeting meeting) {
-        meetingList.add(meeting);
+    public void addMeeting(Meeting meeting) { meetingList.add(meeting);
     }
 }

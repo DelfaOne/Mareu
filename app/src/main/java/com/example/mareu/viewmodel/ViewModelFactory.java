@@ -4,15 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.mareu.repository.SingleStringRepo;
+import com.example.mareu.repository.MeetingRepository;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private static ViewModelFactory factory;
-    private final SingleStringRepo singleStringRepo;
+    private final MeetingRepository meetingRepository;
 
-    private ViewModelFactory(SingleStringRepo singleStringRepo) {
-        this.singleStringRepo = singleStringRepo;
+    private ViewModelFactory(MeetingRepository meetingRepository) {
+        this.meetingRepository = meetingRepository;
     }
 
     public static ViewModelFactory getInstance() {
@@ -20,7 +20,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
                     factory = new ViewModelFactory(
-                            new SingleStringRepo()
+                            new MeetingRepository()
                     );
                 }
             }
@@ -33,7 +33,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MeetingViewModel.class)) {
-            return (T) new MeetingViewModel(singleStringRepo);
+            return (T) new MeetingViewModel(meetingRepository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

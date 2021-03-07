@@ -2,26 +2,25 @@ package com.example.mareu.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import com.example.mareu.MeetingRecyclerViewAdapter;
+
 import com.example.mareu.repository.Meeting;
-import com.example.mareu.repository.SingleStringRepo;
+import com.example.mareu.repository.MeetingRepository;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MeetingViewModel extends ViewModel {
 
-    private final SingleStringRepo singleStringRepo;
+    private final MeetingRepository meetingRepository;
     private final MutableLiveData<List<MeetingViewState>> _meetingViewStateLiveData = new MutableLiveData<>();
     public final LiveData<List<MeetingViewState>> meetingViewStateLiveData = _meetingViewStateLiveData;
 
-    public MeetingViewModel(SingleStringRepo singleStringRepo) {
-        this.singleStringRepo = singleStringRepo;
+    public MeetingViewModel(MeetingRepository meetingRepository) {
+        this.meetingRepository = meetingRepository;
     }
 
     public void loadData() {
-        List<Meeting> meetingList = singleStringRepo.getMeeting();
+        List<Meeting> meetingList = meetingRepository.getMeeting();
         List<MeetingViewState> viewState = map(meetingList);
         _meetingViewStateLiveData.setValue(viewState);
     }
@@ -41,7 +40,7 @@ public class MeetingViewModel extends ViewModel {
     }
 
     public void deleteItem(MeetingViewState meetingViewState) {
-        singleStringRepo.deleteMeetingItem(meetingViewState);
+        meetingRepository.deleteMeetingItem(meetingViewState);
         loadData();
     }
 }

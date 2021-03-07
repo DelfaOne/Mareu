@@ -7,5 +7,15 @@
     <fragment
         android:id="@+id/fragmentListMeeting2"
         android:name="com.example.mareu.view.FragmentListMeeting"
-        android:label="FragmentListMeeting" />
+        android:label="FragmentListMeeting" >
+
+        <action
+            android:id="@+id/action_fragmentListMeeting2_to_fragmentAddMeeting"
+            app:destination="@id/fragmentAddMeeting" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentAddMeeting"
+        android:name="com.example.mareu.view.FragmentAddMeeting"
+        android:label="FragmentAddMeeting" />
 </navigation>

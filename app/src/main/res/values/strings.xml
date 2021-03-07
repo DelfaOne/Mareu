@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">MaReu</string>
     <string name="subject_title">1$ - 2$ - 3$</string>
+    <string name="date">Date</string>
+    <string name="lieu">Lieu</string>
+    <string name="sujet">Sujet</string>
+
+    <string-array name="location">
+        <item>Peach</item>
+        <item>Mario</item>
+        <item>Wario</item>
+        <item>Bowser</item>
+        <item>Luigi</item>
+    </string-array>
 </resources>

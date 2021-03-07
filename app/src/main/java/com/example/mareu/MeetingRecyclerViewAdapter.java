@@ -42,9 +42,7 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
         MeetingViewState meeting = meetingList.get(position);
         holder.itemBinding.meetingTitle.setText(meeting.getReunionSubject() + " - " + meeting.getDate() + " - " + meeting.getLieu());
         holder.itemBinding.meetingParticipants.setText(meeting.getParticipants());
-        holder.itemBinding.meetingDeleteBtn.setOnClickListener(v -> {
-            onDeleteItem.deleteItem(meeting);
-        });
+        holder.itemBinding.meetingDeleteBtn.setOnClickListener(v -> onDeleteItem.deleteItem(meeting));
     }
 
     public interface OnDeleteItem {
