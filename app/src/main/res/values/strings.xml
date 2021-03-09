@@ -4,6 +4,8 @@
     <string name="date">Date</string>
     <string name="lieu">Lieu</string>
     <string name="sujet">Sujet</string>
+    <string name="email">Email</string>
+    <string name="ajouter">AJOUTER</string>
 
     <string-array name="location">
         <item>Peach</item>

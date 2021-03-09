@@ -14,7 +14,12 @@ public class MeetingRepository {
         apiService.deleteMeeting(meetingViewState.getId());
     }
 
+    public void addMeetingItem(Meeting meeting) {
+        apiService.addMeeting(meeting);
+    }
+
     public List<Meeting> getMeeting() {
+
         return apiService.getMeeting();
     }
 }

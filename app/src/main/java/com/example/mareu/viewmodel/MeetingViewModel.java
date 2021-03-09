@@ -43,4 +43,8 @@ public class MeetingViewModel extends ViewModel {
         meetingRepository.deleteMeetingItem(meetingViewState);
         loadData();
     }
+
+    public void addMeeting(Meeting meeting) {
+        meetingRepository.addMeetingItem(meeting);
+    }
 }
