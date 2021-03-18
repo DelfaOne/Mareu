@@ -16,7 +16,8 @@
             android:layout_height="56dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@mipmap/ic_launcher" />
+            tools:src="@mipmap/ic_launcher"
+            app:tint="@color/purple_700" />
 
         <TextView
             android:id="@+id/meeting_title"

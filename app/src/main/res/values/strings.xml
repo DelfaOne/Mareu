@@ -6,6 +6,13 @@
     <string name="sujet">Sujet</string>
     <string name="email">Email</string>
     <string name="ajouter">AJOUTER</string>
+    <string name="error_subject_missing">Please add a subject</string>
+    <string name="error_location_missing">Please add a location</string>
+    <string name="error_date_missing">Please add a date</string>
+    <string name="error_email_missing">Please add a email</string>
+    <string name="liste_des_participants">Liste des participants</string>
+    <string name="filtrer_par_date">Filtrer par date</string>
+    <string name="filtrer_par_pi_ces">Filtrer par pièces</string>
 
     <string-array name="location">
         <item>Peach</item>
@@ -13,5 +20,13 @@
         <item>Wario</item>
         <item>Bowser</item>
         <item>Luigi</item>
+    </string-array>
+
+    <string-array name="color">
+        <item>#FF0088</item>
+        <item>#4CAF50</item>
+        <item>#3F51B5</item>
+        <item>#FFEB3B</item>
+        <item>#F44336</item>
     </string-array>
 </resources>

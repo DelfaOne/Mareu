@@ -1,9 +1,8 @@
-package com.example.mareu.viewmodel;
+package com.example.mareu.meetings;
+
+import android.graphics.Color;
 
 import androidx.annotation.NonNull;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class MeetingViewState {
 
@@ -17,7 +16,7 @@ public class MeetingViewState {
     @NonNull
     private final String participants;
 
-    public MeetingViewState(@NonNull int id,@NonNull String reunionSubject,@NonNull String lieu,@NonNull String date,@NonNull String participants) {
+    public MeetingViewState(@NonNull int id, @NonNull String reunionSubject, @NonNull String lieu, @NonNull String date, @NonNull String participants) {
         this.id = id;
         this.reunionSubject = reunionSubject;
         this.lieu = lieu;

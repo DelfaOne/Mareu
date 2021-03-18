@@ -43,5 +43,4 @@ public class Meeting {
     public String getLieu() {
         return lieu;
     }
-
 }

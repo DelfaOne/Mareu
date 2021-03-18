@@ -1,20 +1,21 @@
 package com.example.mareu;
 
+import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mareu.databinding.ItemListMeetingBinding;
-import com.example.mareu.viewmodel.MeetingViewState;
+import com.example.mareu.meetings.MeetingViewState;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecyclerViewAdapter.MeetingViewHolder> {
 
-    private final ArrayList<MeetingViewState> meetingList = new ArrayList<MeetingViewState>();
+    private final ArrayList<MeetingViewState> meetingList = new ArrayList<>();
     private final OnDeleteItem onDeleteItem;
 
 
@@ -40,9 +41,10 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
     @Override
     public void onBindViewHolder(@NonNull MeetingViewHolder holder, int position) {
         MeetingViewState meeting = meetingList.get(position);
-        holder.itemBinding.meetingTitle.setText(meeting.getReunionSubject() + " - " + meeting.getDate() + " - " + meeting.getLieu());
+        holder.itemBinding.meetingTitle.setText(meeting.getReunionSubject() + " - " + meeting.getDate() + "   " + meeting.getLieu());
         holder.itemBinding.meetingParticipants.setText(meeting.getParticipants());
         holder.itemBinding.meetingDeleteBtn.setOnClickListener(v -> onDeleteItem.deleteItem(meeting));
+        holder.itemBinding.meetingAvatar.setColorFilter(Color.argb(255, 0, 102, 255));
     }
 
     public interface OnDeleteItem {

@@ -30,4 +30,15 @@ public class DummyMeetingApiService implements MeetingApiService{
     public void addMeeting(Meeting meeting) {
         meetingList.add(meeting);
     }
+
+    @Override
+    public int generateNewMeetingId() {
+        int highestId = 0;
+        for (Meeting meeting : meetingList) {
+            if (highestId < meeting.getId()) {
+                highestId = meeting.getId();
+            }
+        }
+        return highestId + 1;
+    }
 }
