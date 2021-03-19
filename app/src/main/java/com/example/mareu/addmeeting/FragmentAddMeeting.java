@@ -19,6 +19,7 @@ import com.example.mareu.R;
 import com.example.mareu.databinding.FragmentAddMeetingBinding;
 import com.example.mareu.ViewModelFactory;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
@@ -27,10 +28,6 @@ import java.util.Calendar;
 
 public class FragmentAddMeeting extends Fragment {
     private FragmentAddMeetingBinding vb;
-    private MaterialDatePicker.Builder builderDate;
-    private MaterialDatePicker materialDatePicker;
-    private MaterialTimePicker materialTimePicker;
-    private MaterialTimePicker.Builder builderTime = new MaterialTimePicker.Builder();
 
     @Nullable
     @Override
@@ -58,25 +55,29 @@ public class FragmentAddMeeting extends Fragment {
         setDateBuilder();
         setTimeBuilder();
 
-        vb.dateEdit.setOnClickListener(v -> materialDatePicker.show(getParentFragmentManager(), "Date Picker"));
-        materialDatePicker.addOnPositiveButtonClickListener(validate -> vb.dateEdit.setText(materialDatePicker.getHeaderText()));
+        vb.dateEdit.setOnClickListener(v ->
+                MaterialDatePicker.Builder.datePicker()
+                        .build()
+                        .addOnPositiveButtonClickListener(epoch -> {
+                            meetingViewModel.onDateChange(epoch);
+                        })
+                        .show(getParentFragmentManager(), "Date Picker"));
 
-        vb.hoursEdit.setOnClickListener(v -> materialTimePicker.show(getParentFragmentManager(), "Time Picker"));
-        materialTimePicker.addOnPositiveButtonClickListener(validate -> vb.dateEdit.setText(materialTimePicker.getHour() + " : " + materialTimePicker.getMinute()));
-
-        vb.addBtn.setOnClickListener( v -> {
-            meetingViewModel.onSubjectChange(convertEditContent(vb.subjectEdit));
-            meetingViewModel.onPlaceChange(vb.locationMenu.getText().toString());
-            meetingViewModel.onDateChange(convertEditContent(vb.dateEdit));
-            meetingViewModel.onEmailChange(convertEditContent(vb.mailEdit));
-            meetingViewModel.onButtonAddClick();
-            NavHostFragment.findNavController(this).navigate(R.id.action_fragmentAddMeeting_pop_including_fragmentListMeeting2);
-            hideKeyboardFrom(getContext(),vb.getRoot());
+        vb.hoursEdit.setOnClickListener(v -> {
+            MaterialTimePicker materialTimePicker = new MaterialTimePicker();
+            materialTimePicker.addOnPositiveButtonClickListener(v1 -> {
+                meetingViewModel.onTimeChange(materialTimePicker.getHour(), materialTimePicker.getMinute());
+            });
         });
-    }
-
-    private String convertEditContent(TextInputEditText txt) {
-        return txt.getText().toString();
+        vb.addBtn.setOnClickListener(v -> {
+           /* meetingViewModel.onSubjectChange(convertEditContent(vb.subjectEdit));
+            meetingViewModel.onPlaceChange(vb.locationMenu.getText().toString());
+            meetingViewModel.onDateChange(convertEditContent(vb.dateEdit) + "+" +convertEditContent(vb.hoursEdit));
+            meetingViewModel.onEmailChange(convertEditContent(vb.mailEdit));*/
+            meetingViewModel.onButtonAddClick();
+            /*NavHostFragment.findNavController(this).navigate(R.id.action_fragmentAddMeeting_pop_including_fragmentListMeeting2);
+            hideKeyboardFrom(getContext(),vb.getRoot());*/
+        });
     }
 
     private void setDateBuilder() {

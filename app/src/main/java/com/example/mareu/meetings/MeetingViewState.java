@@ -12,16 +12,13 @@ public class MeetingViewState {
     @NonNull
     private final String date;
     @NonNull
-    private final String hours;
-    @NonNull
     private final String participants;
 
-    public MeetingViewState(@NonNull int id, @NonNull String reunionSubject, @NonNull String lieu, @NonNull String date, @NonNull String hours, @NonNull String participants) {
+    public MeetingViewState(@NonNull int id, @NonNull String reunionSubject, @NonNull String lieu, @NonNull String date, @NonNull String participants) {
         this.id = id;
         this.reunionSubject = reunionSubject;
         this.lieu = lieu;
         this.date = date;
-        this.hours = hours;
         this.participants = participants;
     }
 
@@ -38,9 +35,10 @@ public class MeetingViewState {
         return reunionSubject;
     }
 
-    public String getDate() { return date; }
-
-    public String getHours() { return hours; }
+    public String getDate() {
+        //return LocalDateTime.parse(this.date).toString();
+        return date;
+    }
 
     public String getParticipants() {
         return participants;
