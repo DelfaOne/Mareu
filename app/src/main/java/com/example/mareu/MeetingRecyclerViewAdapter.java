@@ -1,12 +1,12 @@
 package com.example.mareu;
 
-import android.graphics.Color;
-import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mareu.databinding.ItemListMeetingBinding;
 import com.example.mareu.meetings.MeetingViewState;
 
@@ -41,11 +41,34 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
     @Override
     public void onBindViewHolder(@NonNull MeetingViewHolder holder, int position) {
         MeetingViewState meeting = meetingList.get(position);
-        holder.itemBinding.meetingTitle.setText(meeting.getReunionSubject() + " - " + meeting.getDate() + "   " + meeting.getLieu());
+        holder.itemBinding.meetingTitle.setText(meeting.getReunionSubject() + " - " + meeting.getDate() + meeting.getHours() + meeting.getLieu());
         holder.itemBinding.meetingParticipants.setText(meeting.getParticipants());
         holder.itemBinding.meetingDeleteBtn.setOnClickListener(v -> onDeleteItem.deleteItem(meeting));
-        holder.itemBinding.meetingAvatar.setColorFilter(Color.argb(255, 0, 102, 255));
+        holder.itemBinding.meetingAvatar.setBackgroundColor(setColor(meeting.getLieu()));
     }
+
+    public int setColor(String location) {
+        int color = 0;
+        switch (location) {
+            case "Peach" :
+                color = 0xFFFC03A1 ;
+                break;
+            case "Mario" :
+                color = 0xFFFC0303 ;
+                break;
+            case "Wario" :
+                color = 0xFFD69D00 ;
+                break;
+            case "Bowser" :
+                color = 0xFF001DD6 ;
+                break;
+            case "Luigi" :
+                color = 0xFF00D604 ;
+                break;
+        }
+        return color;
+    }
+
 
     public interface OnDeleteItem {
         void deleteItem(MeetingViewState meetingViewState);

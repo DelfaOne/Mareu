@@ -1,5 +1,6 @@
 package com.example.mareu.addmeeting;
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -7,7 +8,9 @@ import androidx.lifecycle.ViewModel;
 import com.example.mareu.R;
 import com.example.mareu.repository.MeetingRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class AddMeetingViewModel extends ViewModel {
@@ -22,6 +25,8 @@ public class AddMeetingViewModel extends ViewModel {
     private  String location;
 
     private String date;
+
+    private String hours;
 
     private String email;
 
@@ -44,6 +49,11 @@ public class AddMeetingViewModel extends ViewModel {
         this.date = date;
         controlInput();
     }
+
+    public void onHoursChange(String hours) {
+        this.hours = date;
+        controlInput();
+    }
     
     public void onEmailChange(String email) {
         this.email = email;
@@ -55,15 +65,24 @@ public class AddMeetingViewModel extends ViewModel {
                 subject,
                 location,
                 convertDate(date),
+                convertTime(hours),
                 email
         );
     }
 
-    public LocalDateTime convertDate(String dateString) {
-        dateString = dateString.replace(" ", "-");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMMM-yyyy");
-        LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
-        return dateTime;
+    public LocalDate convertDate(String dateString) {
+        DateTimeFormatter formatter;
+        if (!(dateString.charAt(1) == ' ')) {
+            formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        } else
+            formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
+        LocalDate date = LocalDate.parse(dateString, formatter);
+        return date;
+    }
+
+    public LocalTime convertTime(String timeString) {
+        LocalTime yo = LocalTime.now();
+       return yo;
     }
 
     private void controlInput() {

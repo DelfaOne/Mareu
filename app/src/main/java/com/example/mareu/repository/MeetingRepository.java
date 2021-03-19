@@ -6,7 +6,8 @@ import com.example.mareu.DI.DI;
 import com.example.mareu.service.MeetingApiService;
 import com.example.mareu.meetings.MeetingViewState;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class MeetingRepository {
@@ -17,20 +18,18 @@ public class MeetingRepository {
         apiService.deleteMeeting(meetingViewState.getId());
     }
 
-    public void addMeetingItem(@NonNull String reunionSubject, @NonNull String lieu, @NonNull LocalDateTime date, @NonNull String participants) {
+    public void addMeetingItem(@NonNull String reunionSubject, @NonNull String lieu, @NonNull LocalDate date, @NonNull LocalTime hours, @NonNull String participants) {
         apiService.addMeeting(new Meeting(
                 apiService.generateNewMeetingId(),
                 reunionSubject,
                 lieu,
                 date,
+                hours,
                 participants
         ));
     }
 
-    public List<Meeting> getMeeting() {
-
-        return apiService.getMeeting();
-    }
+    public List<Meeting> getMeeting() { return apiService.getMeeting(); }
 
 
 }

@@ -12,12 +12,12 @@
 
         <ImageView
             android:id="@+id/meeting_avatar"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="45dp"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@mipmap/ic_launcher"
-            app:tint="@color/purple_700" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/meeting_title"

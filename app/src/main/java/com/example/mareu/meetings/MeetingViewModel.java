@@ -7,7 +7,8 @@ import androidx.lifecycle.ViewModel;
 import com.example.mareu.repository.Meeting;
 import com.example.mareu.repository.MeetingRepository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +37,21 @@ public class MeetingViewModel extends ViewModel {
                     meeting.getReunionSubject(),
                     meeting.getLieu(),
                     formatDateTime(meeting.getDate()),
+                    formatHoursTime(meeting.getHours()),
                     meeting.getParticipants()
             ));
         }
         return results;
     }
 
-    private String formatDateTime(LocalDateTime date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy - HH:mm");
+    private String formatDateTime(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
         return date.format(formatter);
+    }
+
+    private String formatHoursTime(LocalTime date) {
+        String yo = "yo";
+        return yo;
     }
 
     public void deleteItem(MeetingViewState meetingViewState) {

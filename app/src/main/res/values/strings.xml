@@ -13,6 +13,7 @@
     <string name="liste_des_participants">Liste des participants</string>
     <string name="filtrer_par_date">Filtrer par date</string>
     <string name="filtrer_par_pi_ces">Filtrer par pièces</string>
+    <string name="heure">Heure</string>
 
     <string-array name="location">
         <item>Peach</item>

@@ -19,19 +19,18 @@ import com.example.mareu.R;
 import com.example.mareu.databinding.FragmentAddMeetingBinding;
 import com.example.mareu.ViewModelFactory;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
-import java.text.DateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class FragmentAddMeeting extends Fragment {
     private FragmentAddMeetingBinding vb;
-    private MaterialDatePicker.Builder builder;
+    private MaterialDatePicker.Builder builderDate;
     private MaterialDatePicker materialDatePicker;
+    private MaterialTimePicker materialTimePicker;
+    private MaterialTimePicker.Builder builderTime = new MaterialTimePicker.Builder();
 
     @Nullable
     @Override
@@ -57,9 +56,13 @@ public class FragmentAddMeeting extends Fragment {
         vb.locationMenu.setAdapter(new ArrayAdapter<>(requireContext(), R.layout.list_item, getMenuAdapter()));
 
         setDateBuilder();
+        setTimeBuilder();
 
         vb.dateEdit.setOnClickListener(v -> materialDatePicker.show(getParentFragmentManager(), "Date Picker"));
-        materialDatePicker.addOnPositiveButtonClickListener(selection -> vb.dateEdit.setText(materialDatePicker.getHeaderText()));
+        materialDatePicker.addOnPositiveButtonClickListener(validate -> vb.dateEdit.setText(materialDatePicker.getHeaderText()));
+
+        vb.hoursEdit.setOnClickListener(v -> materialTimePicker.show(getParentFragmentManager(), "Time Picker"));
+        materialTimePicker.addOnPositiveButtonClickListener(validate -> vb.dateEdit.setText(materialTimePicker.getHour() + " : " + materialTimePicker.getMinute()));
 
         vb.addBtn.setOnClickListener( v -> {
             meetingViewModel.onSubjectChange(convertEditContent(vb.subjectEdit));
@@ -77,8 +80,14 @@ public class FragmentAddMeeting extends Fragment {
     }
 
     private void setDateBuilder() {
-        builder = MaterialDatePicker.Builder.datePicker();
-        materialDatePicker = builder.build();
+        builderDate = MaterialDatePicker.Builder.datePicker();
+        materialDatePicker = builderDate.build();
+    }
+
+    private void setTimeBuilder() {
+        materialTimePicker = builderTime.setTimeFormat(TimeFormat.CLOCK_24H)
+                .setTitleText("Selectionner l'heure")
+                .build();
     }
 
     private String[] getMenuAdapter() {
