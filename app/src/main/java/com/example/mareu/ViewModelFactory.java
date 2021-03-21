@@ -15,7 +15,6 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private static ViewModelFactory factory;
     private final MeetingRepository meetingRepository;
-    private static Application application;
 
     private ViewModelFactory(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
@@ -41,7 +40,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(MeetingViewModel.class)) {
             return (T) new MeetingViewModel(meetingRepository);
         } else if (modelClass.isAssignableFrom(AddMeetingViewModel.class)) {
-            return (T) new AddMeetingViewModel(meetingRepository, application);
+            return (T) new AddMeetingViewModel(meetingRepository, MainApplication.getsApplication());
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

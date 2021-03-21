@@ -85,11 +85,15 @@ public class AddMeetingViewModel extends ViewModel {
             dateError = application.getString(R.string.error_date_missing);
         }
 
+        String readableDate = DateTimeFormatter.ofPattern("dd MM yyyy").format(date);
+        String readableTime = DateTimeFormatter.ofPattern("HH:mm").format(time);
+
         _viewStateLiveData.setValue(new AddMeetingViewState(
                 subject,
                 subjectError,
                 location,
-                date,
+                readableDate,
+                readableTime,
                 email
         ));
     }
