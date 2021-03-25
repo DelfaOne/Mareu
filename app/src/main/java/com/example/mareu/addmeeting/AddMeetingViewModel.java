@@ -10,7 +10,6 @@ import com.example.mareu.repository.MeetingRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
@@ -78,11 +77,20 @@ public class AddMeetingViewModel extends ViewModel {
     private void controlInput() {
         String subjectError = null;
         String dateError = null;
+        String locationError = null;
+        String emailError = null;
+
         if (subject == null || subject.isEmpty()) {
             subjectError = application.getString(R.string.error_subject_missing);
         }
         if (date == null || time == null || convertDate().isBefore(LocalDateTime.now())) {
             dateError = application.getString(R.string.error_date_missing);
+        }
+        if (location == null || location.isEmpty()) {
+            locationError = application.getString(R.string.error_location_missing);
+        }
+        if (email == null || email.isEmpty()) {
+            emailError = application.getString(R.string.error_email_missing);
         }
 
         String readableDate = null;
@@ -99,9 +107,11 @@ public class AddMeetingViewModel extends ViewModel {
                 subject,
                 subjectError,
                 location,
+                locationError,
                 readableDate,
+                dateError,
                 readableTime,
-                email
-        ));
+                email,
+                emailError));
     }
 }
