@@ -1,5 +1,6 @@
 package com.example.mareu.addmeeting;
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.mareu.R;
 import com.example.mareu.repository.MeetingRepository;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,6 +19,7 @@ public class AddMeetingViewModel extends ViewModel {
 
     private final MeetingRepository meetingRepository;
     private final Application application;
+    private final Clock clock;
     private final MutableLiveData<AddMeetingViewState> _viewStateLiveData = new MutableLiveData<>();
     public final LiveData<AddMeetingViewState> viewStateLiveData = _viewStateLiveData;
 
@@ -31,9 +34,10 @@ public class AddMeetingViewModel extends ViewModel {
     private String email;
 
 
-    public AddMeetingViewModel(MeetingRepository meetingRepository, Application application) {
+    public AddMeetingViewModel(MeetingRepository meetingRepository, Application application, Clock clock) {
         this.meetingRepository = meetingRepository;
         this.application = application;
+        this.clock = clock;
     }
 
     public void onSubjectChange(String subject) {
@@ -47,6 +51,7 @@ public class AddMeetingViewModel extends ViewModel {
     }
 
     public void onDateChange(Long epoch) {
+        System.out.println("Epoch :" + epoch);
         this.date = LocalDateTime.ofEpochSecond(epoch / 1000, 0, ZoneOffset.UTC).toLocalDate();
         controlInput();
     }
@@ -79,11 +84,11 @@ public class AddMeetingViewModel extends ViewModel {
         String dateError = null;
         String locationError = null;
         String emailError = null;
-
+        //TODO Test
         if (subject == null || subject.isEmpty()) {
             subjectError = application.getString(R.string.error_subject_missing);
         }
-        if (date == null || time == null || convertDate().isBefore(LocalDateTime.now())) {
+        if (date == null || time == null || convertDate().isBefore(LocalDateTime.now(clock))) {
             dateError = application.getString(R.string.error_date_missing);
         }
         if (location == null || location.isEmpty()) {

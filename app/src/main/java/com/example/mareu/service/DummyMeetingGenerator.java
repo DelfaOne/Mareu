@@ -10,11 +10,11 @@ import java.util.ArrayList;
 public abstract class DummyMeetingGenerator {
 
     public static void fillDummyMeeting(ArrayList<Meeting> arrayListMeeting) {
-        arrayListMeeting.add(new Meeting(1, "Réunion A", "Peach", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(2, "Réunion B", "Mario", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(3, "Réunion C", "Wario", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(4, "Réunion D", "Bowser", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(5, "Réunion E", "Luigi", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(1, "Réunion A", "Salle Peach", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(2, "Réunion B", "Salle Mario", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(3, "Réunion C", "Salle Wario", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(4, "Réunion D", "Salle Bowser", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(5, "Réunion E", "Salle Luigi", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"));
     }
 
     public static ArrayList<Meeting> getDummyMeeting() {

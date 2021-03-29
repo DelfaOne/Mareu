@@ -5,13 +5,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -21,6 +25,7 @@ import com.example.mareu.databinding.FragmentAddMeetingBinding;
 import com.example.mareu.ViewModelFactory;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -41,6 +46,12 @@ public class FragmentAddMeeting extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         vb = null;
@@ -51,52 +62,20 @@ public class FragmentAddMeeting extends Fragment {
                 .get(AddMeetingViewModel.class);
 
         //Subject
-        vb.subjectEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!isRefreshing) {
-                    meetingViewModel.onSubjectChange(s.toString());
-                }
-            }
-        });
-
+       setTextChange(vb.subjectEdit,meetingViewModel);
         //Location
         vb.locationMenu.setAdapter(new ArrayAdapter<>(requireContext(), R.layout.list_item, getMenuAdapter()));
-        vb.locationMenu.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        setTextChange(vb.locationMenu, meetingViewModel);
+        //Mail
+        setTextChange(vb.mailEdit, meetingViewModel);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!isRefreshing) {
-                    meetingViewModel.onPlaceChange(s.toString());
-                }
-            }
-        });
-
+        //Date
         vb.dateEdit.setOnClickListener(v -> {
             MaterialDatePicker<Long> materialDatePicker = MaterialDatePicker.Builder.datePicker().build();
-            materialDatePicker.addOnPositiveButtonClickListener(epoch -> { meetingViewModel.onDateChange(epoch); });
+            materialDatePicker.addOnPositiveButtonClickListener(meetingViewModel::onDateChange);
             materialDatePicker.show(getParentFragmentManager(), "Date Picker");
         });
-
+        //Time
         vb.timeEdit.setOnClickListener(v -> {
             MaterialTimePicker.Builder builder = new MaterialTimePicker.Builder();
             MaterialTimePicker materialTimePicker = builder.setTimeFormat(TimeFormat.CLOCK_24H)
@@ -108,15 +87,11 @@ public class FragmentAddMeeting extends Fragment {
             });
         });
 
-
-
-        meetingViewModel.viewStateLiveData.observe(this, this::setMeetingViewState);
-
-
+        meetingViewModel.viewStateLiveData.observe(getViewLifecycleOwner(), this::setMeetingViewState);
+        //AddButton
         vb.addBtn.setOnClickListener(v -> {
            meetingViewModel.onButtonAddClick();
             NavHostFragment.findNavController(this).navigate(R.id.action_fragmentAddMeeting_pop_including_fragmentListMeeting2);
-            hideKeyboardFrom(getContext(),vb.getRoot());
         });
     }
 
@@ -126,10 +101,13 @@ public class FragmentAddMeeting extends Fragment {
         setTextOnEditText(addMeetingViewState.getDate(), vb.dateEdit);
         setTextOnEditText(addMeetingViewState.getTime(), vb.timeEdit);
         setTextOnEditText(addMeetingViewState.getEmail(), vb.mailEdit);
-
-        vb.textFieldSubject.setError(addMeetingViewState.getSubjectError());
         vb.locationMenu.setText(addMeetingViewState.getLocation(), false);
-        vb.textFieldLocation.setError(addMeetingViewState.getLocationError());
+
+        setErrorOnField(addMeetingViewState.getSubjectError(), vb.textFieldSubject);
+        setErrorOnField(addMeetingViewState.getLocationError(), vb.textFieldLocation);
+        setErrorOnField(addMeetingViewState.getDateError(), vb.textFieldDate);
+        setErrorOnField(addMeetingViewState.getDateError(), vb.textFieldTime);
+        setErrorOnField(addMeetingViewState.getEmailError(), vb.textFieldMail);
 
         isRefreshing = false;
     }
@@ -137,11 +115,6 @@ public class FragmentAddMeeting extends Fragment {
     private String[] getMenuAdapter() {
         String[] locationList = getResources().getStringArray(R.array.location);
         return locationList;
-    }
-
-    public static void hideKeyboardFrom(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void setTextOnEditText(String text, TextInputEditText on) {
@@ -152,5 +125,36 @@ public class FragmentAddMeeting extends Fragment {
             on.setText(text);
             on.setSelection(text.length());
         }
+    }
+
+    private void setErrorOnField(String error, TextInputLayout textInputLayout) {
+        textInputLayout.setError(error);
+    }
+
+    private void setTextChange(EditText editText, AddMeetingViewModel addMeetingViewModel) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!isRefreshing) {
+                    if (vb.subjectEdit.equals(editText)) {
+                        addMeetingViewModel.onSubjectChange(s.toString());
+                    } else if (vb.locationMenu.equals(editText)) {
+                        addMeetingViewModel.onPlaceChange(s.toString());
+                    } else if (vb.mailEdit.equals(editText)) {
+                        addMeetingViewModel.onEmailChange(s.toString());
+                    }
+                }
+            }
+        });
     }
 }

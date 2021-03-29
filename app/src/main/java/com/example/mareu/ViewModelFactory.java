@@ -11,13 +11,17 @@ import com.example.mareu.addmeeting.AddMeetingViewModel;
 import com.example.mareu.meetings.MeetingViewModel;
 import com.example.mareu.repository.MeetingRepository;
 
+import java.time.Clock;
+
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private static ViewModelFactory factory;
     private final MeetingRepository meetingRepository;
+    private final Clock clock;
 
-    private ViewModelFactory(MeetingRepository meetingRepository) {
+    private ViewModelFactory(MeetingRepository meetingRepository, Clock clock) {
         this.meetingRepository = meetingRepository;
+        this.clock = clock;
     }
 
     public static ViewModelFactory getInstance() {
@@ -25,7 +29,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
                     factory = new ViewModelFactory(
-                            new MeetingRepository()
+                            new MeetingRepository(),
+                            Clock.systemDefaultZone()
                     );
                 }
             }
@@ -40,7 +45,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(MeetingViewModel.class)) {
             return (T) new MeetingViewModel(meetingRepository);
         } else if (modelClass.isAssignableFrom(AddMeetingViewModel.class)) {
-            return (T) new AddMeetingViewModel(meetingRepository, MainApplication.getsApplication());
+            return (T) new AddMeetingViewModel(meetingRepository, MainApplication.getsApplication(), clock);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

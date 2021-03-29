@@ -2,6 +2,8 @@ package com.example.mareu.addmeeting;
 
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
 public class AddMeetingViewState {
 
     private final String subject;
@@ -70,4 +72,40 @@ public class AddMeetingViewState {
     public String getEmailError() { return emailError; }
 
     public String getDateError() { return dateError; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AddMeetingViewState that = (AddMeetingViewState) o;
+        return Objects.equals(subject, that.subject) &&
+                Objects.equals(subjectError, that.subjectError) &&
+                Objects.equals(location, that.location) &&
+                Objects.equals(locationError, that.locationError) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(dateError, that.dateError) &&
+                Objects.equals(time, that.time) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(emailError, that.emailError);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(subject, subjectError, location, locationError, date, dateError, time, email, emailError);
+    }
+
+    @Override
+    public String toString() {
+        return "AddMeetingViewState{" +
+                "subject='" + subject + '\'' +
+                ", subjectError='" + subjectError + '\'' +
+                ", location='" + location + '\'' +
+                ", locationError='" + locationError + '\'' +
+                ", date='" + date + '\'' +
+                ", dateError='" + dateError + '\'' +
+                ", time='" + time + '\'' +
+                ", email='" + email + '\'' +
+                ", emailError='" + emailError + '\'' +
+                '}';
+    }
 }

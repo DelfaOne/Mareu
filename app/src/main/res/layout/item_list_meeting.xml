@@ -32,6 +32,15 @@
             tools:text="Réunion A - 14h00 - Peach" />
 
         <TextView
+            android:id="@+id/meeting_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/MeetingTitle"
+            tools:text="Salle Mario"
+            app:layout_constraintStart_toStartOf="@id/meeting_participants"
+            app:layout_constraintTop_toBottomOf="@id/meeting_title"/>
+
+        <TextView
             android:id="@+id/meeting_participants"
             style="@style/MeetingParticipant"
             android:layout_width="0dp"
@@ -39,7 +48,7 @@
             android:layout_marginStart="8dp"
             app:layout_constraintEnd_toStartOf="@+id/meeting_delete_btn"
             app:layout_constraintStart_toEndOf="@+id/meeting_avatar"
-            app:layout_constraintTop_toBottomOf="@id/meeting_title"
+            app:layout_constraintTop_toBottomOf="@id/meeting_location"
             tools:text="maxime@lamzone.com, alex@lamzone.com" />
 
         <ImageButton

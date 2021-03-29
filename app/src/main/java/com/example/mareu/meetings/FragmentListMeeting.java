@@ -1,6 +1,5 @@
 package com.example.mareu.meetings;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,13 +8,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,8 +21,6 @@ import com.example.mareu.MeetingRecyclerViewAdapter;
 import com.example.mareu.R;
 import com.example.mareu.ViewModelFactory;
 import com.example.mareu.databinding.FragmentListMeetingBinding;
-
-import java.util.List;
 
 public class FragmentListMeeting extends Fragment {
 
@@ -39,9 +34,14 @@ public class FragmentListMeeting extends Fragment {
         vb = FragmentListMeetingBinding.inflate(inflater, container, false);
         init();
         setHasOptionsMenu(true);
-
         View view = vb.getRoot();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class FragmentListMeeting extends Fragment {
         meetingViewModel.loadData();
 
         vb.meetingRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
-        meetingRecyclerViewAdapter = new MeetingRecyclerViewAdapter(meetingViewState -> meetingViewModel.deleteItem(meetingViewState));
+        meetingRecyclerViewAdapter = new MeetingRecyclerViewAdapter(meetingViewModel::deleteItem);
 
         vb.meetingRecyclerview.setAdapter(meetingRecyclerViewAdapter);
 
