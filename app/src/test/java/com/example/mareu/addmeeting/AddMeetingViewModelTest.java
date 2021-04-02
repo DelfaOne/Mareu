@@ -4,11 +4,8 @@ import android.app.Application;
 import android.content.res.Resources;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 
-import com.bumptech.glide.load.engine.Resource;
 import com.example.mareu.R;
 import com.example.mareu.repository.MeetingRepository;
 
@@ -20,16 +17,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.lang.reflect.Array;
-import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddMeetingViewModelTest extends TestCase {
@@ -93,25 +86,53 @@ public class AddMeetingViewModelTest extends TestCase {
         //WHEN
         addMeetingViewModel.onSubjectChange(subjectEmpty);
         addMeetingViewModel.onButtonAddClick();
-        addMeetingViewModel.viewStateLiveData.observeForever(new Observer<AddMeetingViewState>() {
-            @Override
-            public void onChanged(AddMeetingViewState addMeetingViewState) {
-                //THEN
-                final AddMeetingViewState expected = new AddMeetingViewState(
-                        "",
-                        "subjectError",
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null
-                );
-                //Check state
-                assertEquals(expected, addMeetingViewState);
 
-            }
+        //THEN
+        addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
+            final AddMeetingViewState expected = new AddMeetingViewState(
+                    "",
+                    "subjectError",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            //Check state
+            assertEquals(expected, addMeetingViewState);
+
+        });
+    }
+
+    @Test
+    public void shouldDisplayErrorWhenDateIsBeforeActualDate() {
+        //GIVEN
+        long incorrectDate = 1612275107000L;
+
+        Resources mockResources = Mockito.mock(Resources.class);
+        Mockito.doReturn("dateError").when(mockResources).getString(R.string.error_date_missing);
+        Mockito.doReturn(mockResources).when(application).getResources();
+
+        //WHEN
+        addMeetingViewModel.onDateChange(incorrectDate);
+        addMeetingViewModel.onButtonAddClick();
+
+        //THEN
+        addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
+            final AddMeetingViewState expected = new AddMeetingViewState(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    "dateError",
+                    null,
+                    null,
+                    null
+            );
+            assertEquals(expected, addMeetingViewState);
         });
     }
 
@@ -144,7 +165,7 @@ public class AddMeetingViewModelTest extends TestCase {
         Mockito.verifyNoMoreInteractions(meetingRepository);
     }
 
-    @Test
+   /* @Test
     public void verifyOnLocationChange() {
         //GIVEN
         final Observer<AddMeetingViewState> observer = Mockito.mock(Observer.class);
@@ -209,8 +230,7 @@ public class AddMeetingViewModelTest extends TestCase {
         Mockito.verify(observer).onChanged(Mockito.argThat(argument -> {
             return argument.getEmail().equals(email);
         }));
-    }
-
+    }*/
 
 
 }

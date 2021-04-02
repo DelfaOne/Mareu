@@ -8,7 +8,8 @@
     <string name="ajouter">AJOUTER</string>
     <string name="error_subject_missing">Please add a subject</string>
     <string name="error_location_missing">Please add a location</string>
-    <string name="error_date_missing">Please add a date</string>
+    <string name="error_date_missing">Please add a correct date</string>
+    <string name="error_date_before_actual">Please enter a correct date your date is older than the current date</string>
     <string name="error_email_missing">Please add a email</string>
     <string name="liste_des_participants">Liste des participants</string>
     <string name="filtrer_par_date">Filtrer par date</string>

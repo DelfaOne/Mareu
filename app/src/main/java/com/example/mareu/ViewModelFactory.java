@@ -1,12 +1,10 @@
 package com.example.mareu;
 
-import android.app.Application;
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mareu.DI.DI;
 import com.example.mareu.addmeeting.AddMeetingViewModel;
 import com.example.mareu.meetings.MeetingViewModel;
 import com.example.mareu.repository.MeetingRepository;
@@ -29,7 +27,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
                     factory = new ViewModelFactory(
-                            new MeetingRepository(),
+                            new MeetingRepository(DI.getNeighbourApiService()),
                             Clock.systemDefaultZone()
                     );
                 }

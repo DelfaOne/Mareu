@@ -1,5 +1,8 @@
 package com.example.mareu.meetings;
 
+import android.util.Log;
+
+import androidx.core.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -50,5 +53,9 @@ public class MeetingViewModel extends ViewModel {
     public void deleteItem(MeetingViewState meetingViewState) {
         meetingRepository.deleteMeetingItem(meetingViewState);
         loadData();
+    }
+
+    public void onDateRangeSelected(Pair<Long, Long> selection) {
+        Log.v("DateRangeValue :", selection.toString());
     }
 }

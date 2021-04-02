@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -21,17 +22,22 @@ import com.example.mareu.MeetingRecyclerViewAdapter;
 import com.example.mareu.R;
 import com.example.mareu.ViewModelFactory;
 import com.example.mareu.databinding.FragmentListMeetingBinding;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 public class FragmentListMeeting extends Fragment {
 
     private FragmentListMeetingBinding vb;
     private MeetingRecyclerViewAdapter meetingRecyclerViewAdapter;
 
+    private MeetingViewModel meetingViewModel;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vb = FragmentListMeetingBinding.inflate(inflater, container, false);
+        meetingViewModel= new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
         init();
         setHasOptionsMenu(true);
         View view = vb.getRoot();
@@ -53,8 +59,9 @@ public class FragmentListMeeting extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_filter_date : {
-                Log.v("FirstItem: ", "0 trigger");
-                return true;
+                MaterialDatePicker<Pair<Long, Long>> materialDatePicker = MaterialDatePicker.Builder.dateRangePicker().build();
+                materialDatePicker.addOnPositiveButtonClickListener(selection -> meetingViewModel.onDateRangeSelected(selection));
+                materialDatePicker.show(getParentFragmentManager(), "Date Picker");
             }
             case R.id.menu_filter_room : {
                 Log.v("SecondItem: ", "1 trigger");
@@ -78,8 +85,8 @@ public class FragmentListMeeting extends Fragment {
 
     private void init() {
 
-        MeetingViewModel meetingViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance())
-                .get(MeetingViewModel.class);
+
+
 
         //si meetingViewStates change alors on met à jour notre adapter
         meetingViewModel.meetingViewStateLiveData.observe(this, meetingViewStates -> meetingRecyclerViewAdapter.submitList(meetingViewStates));
