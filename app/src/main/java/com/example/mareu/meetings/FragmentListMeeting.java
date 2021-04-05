@@ -62,14 +62,18 @@ public class FragmentListMeeting extends Fragment {
                 MaterialDatePicker<Pair<Long, Long>> materialDatePicker = MaterialDatePicker.Builder.dateRangePicker().build();
                 materialDatePicker.addOnPositiveButtonClickListener(selection -> meetingViewModel.onDateRangeSelected(selection));
                 materialDatePicker.show(getParentFragmentManager(), "Date Picker");
+                break;
             }
             case R.id.menu_filter_room : {
-                Log.v("SecondItem: ", "1 trigger");
-                return true;
+                break;
             }
-
+            case R.id.menu_show_all : {
+                meetingViewModel.onDateSortingButtonSelected();
+                break;
+            }
             default: return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     @Override
@@ -84,14 +88,8 @@ public class FragmentListMeeting extends Fragment {
     }
 
     private void init() {
-
-
-
-
         //si meetingViewStates change alors on met à jour notre adapter
-        meetingViewModel.meetingViewStateLiveData.observe(this, meetingViewStates -> meetingRecyclerViewAdapter.submitList(meetingViewStates));
-
-        meetingViewModel.loadData();
+        meetingViewModel.getMeetingViewStateLiveData().observe(this, meetingViewStates -> meetingRecyclerViewAdapter.submitList(meetingViewStates));
 
         vb.meetingRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
         meetingRecyclerViewAdapter = new MeetingRecyclerViewAdapter(meetingViewModel::deleteItem);

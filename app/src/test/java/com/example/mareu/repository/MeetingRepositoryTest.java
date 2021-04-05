@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MeetingRepositoryTest {
@@ -25,12 +26,6 @@ public class MeetingRepositoryTest {
 
     @Before
     public void setup() {
-        meetingRepository = new MeetingRepository(apiService);
-    }
-
-    @Test
-    public void shouldGetAllDummyMeeting() {
-        //GIVEN
         List<Meeting> meetingList = Arrays.asList(
                 new Meeting(1, "Réunion A", "Salle Peach", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"),
                 new Meeting(2, "Réunion B", "Salle Mario", LocalDateTime.now(), "maxime@lamzone, fadel@foudi"),
@@ -41,6 +36,11 @@ public class MeetingRepositoryTest {
 
         Mockito.when(apiService.getMeeting()).thenReturn(meetingList);
 
+        meetingRepository = new MeetingRepository(apiService);
+    }
+
+    @Test
+    public void shouldGetAllDummyMeeting() {
         //WHEN
         List<Meeting> result = meetingRepository.getMeeting();
 
@@ -60,9 +60,10 @@ public class MeetingRepositoryTest {
         //WHEN
         meetingRepository.addMeetingItem(itemSubject, itemLocation, itemDate, itemParticipants);
 
-
         //THEN
-        //TODO
+        Mockito.verify(apiService).addMeeting(any());
+        Mockito.verify(apiService).generateNewMeetingId();
+        Mockito.verifyNoMoreInteractions(apiService);
 
     }
 

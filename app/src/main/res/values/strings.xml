@@ -14,6 +14,7 @@
     <string name="liste_des_participants">Liste des participants</string>
     <string name="filtrer_par_date">Filtrer par date</string>
     <string name="filtrer_par_pi_ces">Filtrer par pièces</string>
+    <string name="show_all">Afficher toutes les réunions</string>
     <string name="heure">Heure</string>
 
     <string-array name="location">

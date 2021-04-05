@@ -1,4 +1,7 @@
 package com.example.mareu.service;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.mareu.repository.Meeting;
 
 import java.util.ArrayList;
@@ -6,11 +9,16 @@ import java.util.List;
 
 public class DummyMeetingApiService implements MeetingApiService{
 
-    private ArrayList<Meeting> meetingList = DummyMeetingGenerator.getDummyMeeting();
+    private final List<Meeting> meetingList = DummyMeetingGenerator.getDummyMeeting();
+    private final MutableLiveData<List<Meeting>> meetingListLiveData = new MutableLiveData<>();
+
+    public DummyMeetingApiService() {
+        meetingListLiveData.setValue(meetingList);
+    }
 
     @Override
-    public List<Meeting> getMeeting() {
-        return meetingList;
+    public LiveData<List<Meeting>> getMeetings() {
+        return meetingListLiveData;
     }
 
     @Override
@@ -24,11 +32,14 @@ public class DummyMeetingApiService implements MeetingApiService{
         if (match != null) {
             meetingList.remove(match);
         }
+        meetingListLiveData.setValue(meetingList);
     }
 
     @Override
     public void addMeeting(Meeting meeting) {
+
         meetingList.add(meeting);
+        meetingListLiveData.setValue(meetingList);
     }
 
     @Override

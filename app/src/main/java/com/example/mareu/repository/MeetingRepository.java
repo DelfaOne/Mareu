@@ -1,6 +1,7 @@
 package com.example.mareu.repository;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 
 import com.example.mareu.meetings.MeetingViewState;
 import com.example.mareu.service.MeetingApiService;
@@ -32,36 +33,34 @@ public class MeetingRepository {
         ));
     }
 
-    public List<Meeting> getMeeting() {
-        return apiService.getMeeting();
+    public LiveData<List<Meeting>> getMeetings() {
+        return apiService.getMeetings();
     }
 
-    public List<Meeting> getMeetingByDate(LocalDate startDate, LocalDate endDate) {
+    /*public List<Meeting> getMeetingByDate(LocalDate startDate, LocalDate endDate) {
         List<Meeting> meetingListByDate = new ArrayList<>();
         List<Meeting> initialList = apiService.getMeeting();
 
         for (Meeting meeting : initialList) {
-            LocalDate meetingDate = LocalDate.of(meeting.getDate().getYear(), meeting.getDate().getMonth(), meeting.getDate().getDayOfMonth());
-            boolean shouldAdd = meetingDate.isBefore(endDate) && meetingDate.isAfter(startDate);
-            if (shouldAdd) {
+            LocalDate meetingDate = meeting.getDate().toLocalDate();
+            if (meetingDate.isBefore(endDate) && meetingDate.isAfter(startDate)) {
                 meetingListByDate.add(meeting);
             }
         }
         return meetingListByDate;
-    }
+    }*/
 
-    public List<Meeting> getMeetingByLocation(String location) {
+    /*public List<Meeting> getMeetingByLocation(String location) {
         List<Meeting> meetingListByLocation = new ArrayList<>();
-        List<Meeting> initialList = apiService.getMeeting();
+        List<Meeting> initialList = apiService.getMeetings();
 
         for (Meeting meeting : initialList) {
-            boolean shouldAdd = meeting.getLieu().equals(location);
-            if (shouldAdd) {
+            if (meeting.getLieu().equalsIgnoreCase(location)) {
                 meetingListByLocation.add(meeting);
             }
         }
         return meetingListByLocation;
-    }
+    }*/
 
 
 }
