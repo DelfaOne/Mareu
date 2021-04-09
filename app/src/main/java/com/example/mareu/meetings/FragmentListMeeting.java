@@ -1,7 +1,6 @@
 package com.example.mareu.meetings;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,22 +22,24 @@ import com.example.mareu.R;
 import com.example.mareu.ViewModelFactory;
 import com.example.mareu.databinding.FragmentListMeetingBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class FragmentListMeeting extends Fragment {
 
     private FragmentListMeetingBinding vb;
     private MeetingRecyclerViewAdapter meetingRecyclerViewAdapter;
-
-    private MeetingViewModel meetingViewModel;
-
+    private MeetingViewModel vm;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vb = FragmentListMeetingBinding.inflate(inflater, container, false);
-        meetingViewModel= new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
-        init();
+        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
+        setupView();
         setHasOptionsMenu(true);
         View view = vb.getRoot();
         return view;
@@ -59,16 +60,15 @@ public class FragmentListMeeting extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_filter_date : {
-                MaterialDatePicker<Pair<Long, Long>> materialDatePicker = MaterialDatePicker.Builder.dateRangePicker().build();
-                materialDatePicker.addOnPositiveButtonClickListener(selection -> meetingViewModel.onDateRangeSelected(selection));
-                materialDatePicker.show(getParentFragmentManager(), "Date Picker");
+                onDateFilterSelected();
                 break;
             }
             case R.id.menu_filter_room : {
+                onRoomFilterSelected();
                 break;
             }
             case R.id.menu_show_all : {
-                meetingViewModel.onDateSortingButtonSelected();
+                vm.onDateSortingButtonSelected();
                 break;
             }
             default: return super.onOptionsItemSelected(item);
@@ -76,23 +76,39 @@ public class FragmentListMeeting extends Fragment {
         return true;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        vb = null;
+    private void onDateFilterSelected() {
+        MaterialDatePicker<Pair<Long, Long>> materialDatePicker = MaterialDatePicker.Builder.dateRangePicker().build();
+        materialDatePicker.addOnPositiveButtonClickListener(selection -> vm.onDateRangeSelected(selection));
+        materialDatePicker.show(getParentFragmentManager(), "Date Picker");
     }
 
-    public static FragmentListMeeting newInstance() {
-        FragmentListMeeting fragment = new FragmentListMeeting();
-        return fragment;
+    private void onRoomFilterSelected() {
+        boolean[] isCheckedList = {false, false, false, false, false};
+        String[] locationList = getResources().getStringArray(R.array.location);
+        List<String> result = new ArrayList<>();
+
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
+        materialAlertDialogBuilder.setTitle(getString(R.string.select_location))
+                .setNeutralButton(getString(R.string.negative_button), (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setMultiChoiceItems(locationList, null, (dialog, which, isChecked) -> isCheckedList[which] = isChecked)
+                .setPositiveButton(getString(R.string.positive_button), (dialog, which) -> {
+                    for (int i = 0; i < locationList.length; i++) {
+                        if (isCheckedList[i]) {
+                            result.add(locationList[i]);
+                        }
+                    }
+                    vm.onLocationChoiceSelected(result);
+                })
+                .show();
     }
 
-    private void init() {
-        //si meetingViewStates change alors on met à jour notre adapter
-        meetingViewModel.getMeetingViewStateLiveData().observe(this, meetingViewStates -> meetingRecyclerViewAdapter.submitList(meetingViewStates));
+    private void setupView() {
+        vm.getMeetingViewStateLiveData().observe(this, meetingViewStates -> meetingRecyclerViewAdapter.submitList(meetingViewStates));
 
         vb.meetingRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
-        meetingRecyclerViewAdapter = new MeetingRecyclerViewAdapter(meetingViewModel::deleteItem);
+        meetingRecyclerViewAdapter = new MeetingRecyclerViewAdapter(vm::deleteItem);
 
         vb.meetingRecyclerview.setAdapter(meetingRecyclerViewAdapter);
 

@@ -64,7 +64,7 @@ public class FragmentAddMeeting extends Fragment {
         //Subject
        setTextChange(vb.subjectEdit,meetingViewModel);
         //Location
-        vb.locationMenu.setAdapter(new ArrayAdapter<>(requireContext(), R.layout.list_item, getMenuAdapter()));
+        vb.locationMenu.setAdapter(new ArrayAdapter<>(requireContext(), R.layout.list_item, getResources().getStringArray(R.array.location)));
         setTextChange(vb.locationMenu, meetingViewModel);
         //Mail
         setTextChange(vb.mailEdit, meetingViewModel);
@@ -110,11 +110,6 @@ public class FragmentAddMeeting extends Fragment {
         setErrorOnField(addMeetingViewState.getEmailError(), vb.textFieldMail);
 
         isRefreshing = false;
-    }
-
-    private String[] getMenuAdapter() {
-        String[] locationList = getResources().getStringArray(R.array.location);
-        return locationList;
     }
 
     private void setTextOnEditText(String text, TextInputEditText on) {

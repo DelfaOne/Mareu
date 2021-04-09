@@ -46,19 +46,9 @@ public class MeetingViewModel extends ViewModel {
         List<Meeting> copiedMeetings = new ArrayList<>(meetings);
         if (isSortingStateAscendant != null) {
             if (isSortingStateAscendant) { //
-                Collections.sort(copiedMeetings, new Comparator<Meeting>() {
-                    @Override
-                    public int compare(Meeting o1, Meeting o2) {
-                        return o2.getDate().compareTo(o1.getDate());
-                    }
-                });
+                Collections.sort(copiedMeetings, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
             } else {
-                Collections.sort(copiedMeetings, new Comparator<Meeting>() {
-                    @Override
-                    public int compare(Meeting o1, Meeting o2) {
-                        return o1.getDate().compareTo(o2.getDate());
-                    }
-                });
+                Collections.sort(copiedMeetings, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
             }
         }
         for (Meeting itemMeeting : copiedMeetings) {
@@ -67,11 +57,11 @@ public class MeetingViewModel extends ViewModel {
         meetingViewStateMediatorLiveData.setValue(results);
     }
 
-    public void onDateRangeSelected(Pair<Long, Long> selection) {
-        if (selection.first != null && selection.second != null) {
+    public void onDateRangeSelected(Pair<Long, Long> selectedDates) {
+        if (selectedDates.first != null && selectedDates.second != null) {
 
-            LocalDate startDate = Instant.ofEpochMilli(selection.first).atZone(ZoneId.systemDefault()).toLocalDate();
-            LocalDate endDate = Instant.ofEpochMilli(selection.second).atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate startDate = Instant.ofEpochMilli(selectedDates.first).atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate endDate = Instant.ofEpochMilli(selectedDates.second).atZone(ZoneId.systemDefault()).toLocalDate();
 
             List<MeetingViewState> results = new ArrayList<>();
             List<Meeting> actualMeetings = new ArrayList<>();
@@ -89,6 +79,26 @@ public class MeetingViewModel extends ViewModel {
 
             meetingViewStateMediatorLiveData.setValue(results);
         }
+    }
+
+    public void onLocationChoiceSelected(List<String> itemsSelected) {
+        List<MeetingViewState> results = new ArrayList<>();
+        List<Meeting> actualMeetings = new ArrayList<>();
+        System.out.println(itemsSelected.toString());
+
+        if (meetingsLiveData.getValue() != null) {
+            actualMeetings = meetingsLiveData.getValue();
+        }
+
+        for (Meeting meeting : actualMeetings) {
+            String location = meeting.getLieu();
+            for (int i = 0; i < itemsSelected.size(); i++) {
+                if (location.equalsIgnoreCase(itemsSelected.get(i)))
+                    results.add(map(meeting));
+            }
+        }
+
+        meetingViewStateMediatorLiveData.setValue(results);
     }
 
     public void onDateSortingButtonSelected() {

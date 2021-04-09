@@ -43,7 +43,7 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
         MeetingViewState meeting = meetingList.get(position);
         holder.itemBinding.meetingTitle.setText(meeting.getReunionSubject() + " - " + meeting.getDate());
         holder.itemBinding.meetingParticipants.setText(meeting.getParticipants());
-        holder.itemBinding.meetingLocation.setText(meeting.getLieu());
+        holder.itemBinding.meetingLocation.setText("Salle " + meeting.getLieu());
         holder.itemBinding.meetingDeleteBtn.setOnClickListener(v -> onDeleteItem.deleteItem(meeting));
         holder.itemBinding.meetingAvatar.setBackgroundColor(setColor(meeting.getLieu()));
     }
@@ -51,19 +51,19 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
     public int setColor(String location) {
         int color = 0;
         switch (location) {
-            case "Salle Peach" :
+            case "Peach" :
                 color = 0xFFFC03A1 ;
                 break;
-            case "Salle Mario" :
+            case "Mario" :
                 color = 0xFFFC0303 ;
                 break;
-            case "Salle Wario" :
+            case "Wario" :
                 color = 0xFFD69D00 ;
                 break;
-            case "Salle Bowser" :
+            case "Bowser" :
                 color = 0xFF001DD6 ;
                 break;
-            case "Salle Luigi" :
+            case "Luigi" :
                 color = 0xFF00D604 ;
                 break;
         }
