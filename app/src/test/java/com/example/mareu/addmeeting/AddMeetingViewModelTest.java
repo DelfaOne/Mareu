@@ -7,7 +7,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
 
 import com.example.mareu.R;
-import com.example.mareu.repository.MeetingRepository;
+import com.example.mareu.repository.meeting.MeetingRepository;
 
 import junit.framework.TestCase;
 

@@ -1,4 +1,4 @@
-package com.example.mareu.repository;
+package com.example.mareu.repository.meeting;
 
 import androidx.annotation.NonNull;
 

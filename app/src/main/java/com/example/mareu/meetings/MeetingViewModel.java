@@ -1,14 +1,19 @@
 package com.example.mareu.meetings;
 
-import android.util.Log;
+import android.app.Application;
+
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.mareu.repository.Meeting;
-import com.example.mareu.repository.MeetingRepository;
+
+import com.example.mareu.R;
+import com.example.mareu.repository.meeting.Meeting;
+import com.example.mareu.repository.meeting.MeetingRepository;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -17,33 +22,51 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+
+import static com.example.mareu.R.color.Bowser;
+import static com.example.mareu.R.color.Luigi;
+import static com.example.mareu.R.color.Mario;
+import static com.example.mareu.R.color.Peach;
+import static com.example.mareu.R.color.Wario;
 
 public class MeetingViewModel extends ViewModel {
 
+    @NonNull
+    private final Application application;
+    @NonNull
     private final MeetingRepository meetingRepository;
+
     private final MediatorLiveData<List<MeetingViewState>> meetingViewStateMediatorLiveData = new MediatorLiveData<>();
     private final MutableLiveData<Boolean> isSortingStateAscendantLiveData = new MutableLiveData<>();
-    LiveData<List<Meeting>> meetingsLiveData;
+    private final MutableLiveData<Pair<Long, Long>> dateRangeLiveData = new MutableLiveData<>();
+    private final LiveData<List<Meeting>> meetingsLiveData;
 
-    public MeetingViewModel(MeetingRepository meetingRepository) {
+    public MeetingViewModel(@NonNull MeetingRepository meetingRepository, @NonNull Application application) {
         this.meetingRepository = meetingRepository;
+        this.application = application;
+
         meetingsLiveData = meetingRepository.getMeetings();
+
         meetingViewStateMediatorLiveData.addSource(meetingsLiveData, meetings -> {
-            combine(meetings, isSortingStateAscendantLiveData.getValue());
+            combine(meetings, isSortingStateAscendantLiveData.getValue(), dateRangeLiveData.getValue());
         });
         meetingViewStateMediatorLiveData.addSource(isSortingStateAscendantLiveData, isSortingStateAscendant -> {
-            combine(meetingsLiveData.getValue(), isSortingStateAscendant);
+            combine(meetingsLiveData.getValue(), isSortingStateAscendant, dateRangeLiveData.getValue());
+        });
+        meetingViewStateMediatorLiveData.addSource(dateRangeLiveData, dateRange -> {
+            combine(meetingsLiveData.getValue(), isSortingStateAscendantLiveData.getValue(), dateRange);
         });
     }
 
-    private void combine(@Nullable List<Meeting> meetings, @Nullable Boolean isSortingStateAscendant) {
+    private void combine(@Nullable List<Meeting> meetings, @Nullable Boolean isSortingStateAscendant, @Nullable Pair<Long, Long> dateRange) {
         if (meetings == null) {
             return;
         }
+
         List<MeetingViewState> results = new ArrayList<>();
         List<Meeting> copiedMeetings = new ArrayList<>(meetings);
+
         if (isSortingStateAscendant != null) {
             if (isSortingStateAscendant) { //
                 Collections.sort(copiedMeetings, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
@@ -51,54 +74,31 @@ public class MeetingViewModel extends ViewModel {
                 Collections.sort(copiedMeetings, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
             }
         }
-        for (Meeting itemMeeting : copiedMeetings) {
-            results.add(map(itemMeeting));
+
+        if (meetingsLiveData.getValue() != null) {
+            copiedMeetings = meetingsLiveData.getValue();
         }
-        meetingViewStateMediatorLiveData.setValue(results);
-    }
 
-    public void onDateRangeSelected(Pair<Long, Long> selectedDates) {
-        if (selectedDates.first != null && selectedDates.second != null) {
+        if (dateRange != null) {
+            LocalDate startDate = Instant.ofEpochMilli(dateRange.first).atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate endDate = Instant.ofEpochMilli(dateRange.second).atZone(ZoneId.systemDefault()).toLocalDate();
 
-            LocalDate startDate = Instant.ofEpochMilli(selectedDates.first).atZone(ZoneId.systemDefault()).toLocalDate();
-            LocalDate endDate = Instant.ofEpochMilli(selectedDates.second).atZone(ZoneId.systemDefault()).toLocalDate();
-
-            List<MeetingViewState> results = new ArrayList<>();
-            List<Meeting> actualMeetings = new ArrayList<>();
-
-            if (meetingsLiveData.getValue() != null) {
-                actualMeetings = meetingsLiveData.getValue();
-            }
-
-            for (Meeting meeting : actualMeetings) {
+            for (Meeting meeting : copiedMeetings) {
                 LocalDate meetingDate = meeting.getDate().toLocalDate();
-                if (meetingDate.isBefore(endDate.plusDays(1)) && meetingDate.isAfter(startDate.minusDays(1))) {
+                if (dateRange != null && meetingDate.isBefore(endDate.plusDays(1)) && meetingDate.isAfter(startDate.minusDays(1))) {
                     results.add(map(meeting));
                 }
             }
-
-            meetingViewStateMediatorLiveData.setValue(results);
-        }
-    }
-
-    public void onLocationChoiceSelected(List<String> itemsSelected) {
-        List<MeetingViewState> results = new ArrayList<>();
-        List<Meeting> actualMeetings = new ArrayList<>();
-        System.out.println(itemsSelected.toString());
-
-        if (meetingsLiveData.getValue() != null) {
-            actualMeetings = meetingsLiveData.getValue();
-        }
-
-        for (Meeting meeting : actualMeetings) {
-            String location = meeting.getLieu();
-            for (int i = 0; i < itemsSelected.size(); i++) {
-                if (location.equalsIgnoreCase(itemsSelected.get(i)))
-                    results.add(map(meeting));
+        } else {
+            for (Meeting meeting : copiedMeetings) {
+                results.add(map(meeting));
             }
         }
-
         meetingViewStateMediatorLiveData.setValue(results);
+    }
+
+    public void onDateRangeSelected(Pair<Long, Long> selectedDate) {
+        dateRangeLiveData.setValue(selectedDate);
     }
 
     public void onDateSortingButtonSelected() {
@@ -115,12 +115,48 @@ public class MeetingViewModel extends ViewModel {
     }
 
     private MeetingViewState map(Meeting meeting) {
+        String title = application.getResources().getString(
+                R.string.meeting_title,
+                meeting.getReunionSubject(),
+                formatDateTime(meeting.getDate())
+        );
+        String roomName = application.getResources().getString(
+                R.string.room_name,
+                meeting.getLieu()
+        );
+        @ColorRes int avatarColor = getColor(meeting.getLieu());
+
         return new MeetingViewState(
                 meeting.getId(),
-                meeting.getReunionSubject(),
-                meeting.getLieu(),
-                formatDateTime(meeting.getDate()),
-                meeting.getParticipants());
+                title,
+                roomName,
+                meeting.getParticipants(),
+                avatarColor);
+    }
+
+    @ColorRes
+    public int getColor(String rooms) {
+        int color;
+        switch (rooms) {
+            case "Peach":
+                color = Peach;
+                break;
+            case "Mario":
+                color = Mario;
+                break;
+            case "Wario":
+                color = Wario;
+                break;
+            case "Bowser":
+                color = Bowser;
+                break;
+            case "Luigi":
+                color = Luigi;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + rooms);
+        }
+        return color;
     }
 
     private String formatDateTime(LocalDateTime date) {
@@ -128,7 +164,7 @@ public class MeetingViewModel extends ViewModel {
         return date.format(formatter);
     }
 
-    public void deleteItem(MeetingViewState meetingViewState) {
-        meetingRepository.deleteMeetingItem(meetingViewState);
+    public void deleteItem(int meetingId) {
+        meetingRepository.deleteMeetingItem(meetingId);
     }
 }

@@ -42,4 +42,7 @@
         <item>#FFEB3B</item>
         <item>#F44336</item>
     </string-array>
+
+    <string name="meeting_title">%s - %s</string>
+    <string name="room_name">Salle %s</string>
 </resources>

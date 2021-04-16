@@ -1,47 +1,50 @@
 package com.example.mareu.meetings;
 
+import android.graphics.Color;
+
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 
 public class MeetingViewState {
 
     private final int id;
     @NonNull
-    private final String reunionSubject;
+    private final String title;
     @NonNull
-    private final String lieu;
-    @NonNull
-    private final String date;
+    private final String roomName;
     @NonNull
     private final String participants;
+    @ColorRes
+    private final int avatarColor;
 
-    public MeetingViewState(@NonNull int id, @NonNull String reunionSubject, @NonNull String lieu, @NonNull String date, @NonNull String participants) {
+    public MeetingViewState(int id, @NonNull String title, @NonNull String roomName, @NonNull String participants, @ColorRes int avatarColor) {
         this.id = id;
-        this.reunionSubject = reunionSubject;
-        this.lieu = lieu;
-        this.date = date;
+        this.title = title;
+        this.roomName = roomName;
         this.participants = participants;
-    }
-
-    @NonNull
-    public String getLieu() {
-        return lieu;
+        this.avatarColor = avatarColor;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getReunionSubject() {
-        return reunionSubject;
+    @NonNull
+    public String getTitle() {
+        return title;
     }
 
-    public String getDate() {
-        //return LocalDateTime.parse(this.date).toString();
-        return date;
+    @NonNull
+    public String getRoomName() {
+        return roomName;
     }
 
+    @NonNull
     public String getParticipants() {
         return participants;
     }
 
+    public int getAvatarColor() {
+        return avatarColor;
+    }
 }

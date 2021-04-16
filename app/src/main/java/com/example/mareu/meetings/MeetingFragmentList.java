@@ -21,6 +21,7 @@ import com.example.mareu.MeetingRecyclerViewAdapter;
 import com.example.mareu.R;
 import com.example.mareu.ViewModelFactory;
 import com.example.mareu.databinding.FragmentListMeetingBinding;
+import com.example.mareu.roomselector.RoomSelectorDialogFragment;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FragmentListMeeting extends Fragment {
+public class MeetingFragmentList extends Fragment {
 
     private FragmentListMeetingBinding vb;
     private MeetingRecyclerViewAdapter meetingRecyclerViewAdapter;
@@ -83,29 +84,11 @@ public class FragmentListMeeting extends Fragment {
     }
 
     private void onRoomFilterSelected() {
-        boolean[] isCheckedList = {false, false, false, false, false};
-        String[] locationList = getResources().getStringArray(R.array.location);
-        List<String> result = new ArrayList<>();
-
-        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
-        materialAlertDialogBuilder.setTitle(getString(R.string.select_location))
-                .setNeutralButton(getString(R.string.negative_button), (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .setMultiChoiceItems(locationList, null, (dialog, which, isChecked) -> isCheckedList[which] = isChecked)
-                .setPositiveButton(getString(R.string.positive_button), (dialog, which) -> {
-                    for (int i = 0; i < locationList.length; i++) {
-                        if (isCheckedList[i]) {
-                            result.add(locationList[i]);
-                        }
-                    }
-                    vm.onLocationChoiceSelected(result);
-                })
-                .show();
+        new RoomSelectorDialogFragment().show(getActivity().getSupportFragmentManager(), null);
     }
 
     private void setupView() {
-        vm.getMeetingViewStateLiveData().observe(this, meetingViewStates -> meetingRecyclerViewAdapter.submitList(meetingViewStates));
+        vm.getMeetingViewStateLiveData().observe(getViewLifecycleOwner(), meetingViewStates -> meetingRecyclerViewAdapter.submitList(meetingViewStates));
 
         vb.meetingRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
         meetingRecyclerViewAdapter = new MeetingRecyclerViewAdapter(vm::deleteItem);

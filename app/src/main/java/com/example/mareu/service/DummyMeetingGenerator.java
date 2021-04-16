@@ -1,11 +1,13 @@
 package com.example.mareu.service;
 
-import com.example.mareu.repository.Meeting;
+import com.example.mareu.repository.meeting.Meeting;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class DummyMeetingGenerator {
 
@@ -15,16 +17,26 @@ public abstract class DummyMeetingGenerator {
         arrayListMeeting.add(new Meeting(3, "Réunion C", "Wario", LocalDateTime.now().plusDays(3), "maxime@lamzone, fadel@foudi"));
         arrayListMeeting.add(new Meeting(4, "Réunion D", "Bowser", LocalDateTime.now().plusDays(4), "maxime@lamzone, fadel@foudi"));
         arrayListMeeting.add(new Meeting(5, "Réunion E", "Luigi", LocalDateTime.now().plusDays(5), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(1, "Réunion A", "Peach", LocalDateTime.now().plusDays(6), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(2, "Réunion B", "Mario", LocalDateTime.now().plusDays(7), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(3, "Réunion C", "Wario", LocalDateTime.now().plusDays(8), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(4, "Réunion D", "Bowser", LocalDateTime.now().plusDays(9), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(5, "Réunion E", "Luigi", LocalDateTime.now().plusDays(10), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(1, "Réunion A", "Peach", LocalDateTime.now().plusDays(11), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(2, "Réunion B", "Mario", LocalDateTime.now().plusDays(12), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(3, "Réunion C", "Wario", LocalDateTime.now().plusDays(13), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(4, "Réunion D", "Bowser", LocalDateTime.now().plusDays(14), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(5, "Réunion E", "Luigi", LocalDateTime.now().plusDays(15), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(6, "Réunion A", "Peach", LocalDateTime.now().plusDays(6), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(7, "Réunion B", "Mario", LocalDateTime.now().plusDays(7), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(8, "Réunion C", "Wario", LocalDateTime.now().plusDays(8), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(9, "Réunion D", "Bowser", LocalDateTime.now().plusDays(9), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(10, "Réunion E", "Luigi", LocalDateTime.now().plusDays(10), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(11, "Réunion A", "Peach", LocalDateTime.now().plusDays(11), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(12, "Réunion B", "Mario", LocalDateTime.now().plusDays(12), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(13, "Réunion C", "Wario", LocalDateTime.now().plusDays(13), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(14, "Réunion D", "Bowser", LocalDateTime.now().plusDays(14), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(15, "Réunion E", "Luigi", LocalDateTime.now().plusDays(15), "maxime@lamzone, fadel@foudi"));
+    }
+
+    public static Map<String, Boolean> getRooms() {
+        Map<String, Boolean> roomMap = new HashMap<>();
+        roomMap.put("Peach", false);
+        roomMap.put("Mario", false);
+        roomMap.put("Wario", false);
+        roomMap.put("Bowser", false);
+        roomMap.put("Luigi", false);
+        return roomMap;
     }
 
     public static ArrayList<Meeting> getDummyMeeting() {
@@ -32,4 +44,9 @@ public abstract class DummyMeetingGenerator {
         fillDummyMeeting(arrayList);
         return arrayList;
     }
+
+
+
+
+
 }

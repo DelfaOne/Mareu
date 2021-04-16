@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background">#E9EAED</color>
     <color name="picker">#FFC107</color>
+
+    <color name="Peach">#FC03A1</color>
+    <color name="Mario">#FC0303</color>
+    <color name="Wario">#D69D00</color>
+    <color name="Bowser">#001DD6</color>
+    <color name="Luigi">#00D604</color>
+
 </resources>

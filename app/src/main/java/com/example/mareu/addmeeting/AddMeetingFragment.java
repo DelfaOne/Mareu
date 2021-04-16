@@ -31,7 +31,7 @@ import com.google.android.material.timepicker.TimeFormat;
 
 import java.util.Calendar;
 
-public class FragmentAddMeeting extends Fragment {
+public class AddMeetingFragment extends Fragment {
     private FragmentAddMeetingBinding vb;
     private boolean isRefreshing;
 
@@ -58,21 +58,21 @@ public class FragmentAddMeeting extends Fragment {
     }
 
     private void init() {
-        AddMeetingViewModel meetingViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance())
+        AddMeetingViewModel vm = new ViewModelProvider(this, ViewModelFactory.getInstance())
                 .get(AddMeetingViewModel.class);
 
         //Subject
-       setTextChange(vb.subjectEdit,meetingViewModel);
+       setTextChange(vb.subjectEdit,vm);
         //Location
         vb.locationMenu.setAdapter(new ArrayAdapter<>(requireContext(), R.layout.list_item, getResources().getStringArray(R.array.location)));
-        setTextChange(vb.locationMenu, meetingViewModel);
+        setTextChange(vb.locationMenu, vm);
         //Mail
-        setTextChange(vb.mailEdit, meetingViewModel);
+        setTextChange(vb.mailEdit, vm);
 
         //Date
         vb.dateEdit.setOnClickListener(v -> {
             MaterialDatePicker<Long> materialDatePicker = MaterialDatePicker.Builder.datePicker().build();
-            materialDatePicker.addOnPositiveButtonClickListener(meetingViewModel::onDateChange);
+            materialDatePicker.addOnPositiveButtonClickListener(vm::onDateChange);
             materialDatePicker.show(getParentFragmentManager(), "Date Picker");
         });
         //Time
@@ -83,14 +83,14 @@ public class FragmentAddMeeting extends Fragment {
             materialTimePicker.show(getParentFragmentManager(), "Time Picker");
 
             materialTimePicker.addOnPositiveButtonClickListener(v1 -> {
-                meetingViewModel.onTimeChange(materialTimePicker.getHour(), materialTimePicker.getMinute());
+                vm.onTimeChange(materialTimePicker.getHour(), materialTimePicker.getMinute());
             });
         });
 
-        meetingViewModel.viewStateLiveData.observe(getViewLifecycleOwner(), this::setMeetingViewState);
+        vm.viewStateLiveData.observe(getViewLifecycleOwner(), this::setMeetingViewState);
         //AddButton
         vb.addBtn.setOnClickListener(v -> {
-           meetingViewModel.onButtonAddClick();
+           vm.onButtonAddClick();
             NavHostFragment.findNavController(this).navigate(R.id.action_fragmentAddMeeting_pop_including_fragmentListMeeting2);
         });
     }

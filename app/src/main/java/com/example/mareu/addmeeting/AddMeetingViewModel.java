@@ -1,13 +1,11 @@
 package com.example.mareu.addmeeting;
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.mareu.R;
-import com.example.mareu.repository.MeetingRepository;
+import com.example.mareu.repository.meeting.MeetingRepository;
 
 import java.time.Clock;
 import java.time.LocalDate;
