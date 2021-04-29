@@ -1,12 +1,11 @@
 package com.example.mareu.roomselector;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.example.mareu.repository.meeting.Meeting;
 import com.example.mareu.repository.room.RoomRepository;
 
 import java.util.ArrayList;
@@ -17,13 +16,14 @@ public class RoomSelectorViewModel extends ViewModel {
 
     @NonNull
     private final RoomRepository roomRepository;
-    private final LiveData<List<RoomSelectorViewState>> roomSelectorViewState;
+    private final LiveData<List<RoomSelectorViewState>> roomSelectorViewStateLiveData;
 
     public RoomSelectorViewModel(@NonNull RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
 
-        this.roomSelectorViewState = Transformations.map(roomRepository.getRooms(), roomSelectedMap -> {
+        this.roomSelectorViewStateLiveData = Transformations.map(roomRepository.getRooms(), roomSelectedMap -> {
             List<RoomSelectorViewState> roomsList = new ArrayList<>();
+
             for (Map.Entry<String, Boolean> entry : roomSelectedMap.entrySet()) {
                 roomsList.add(new RoomSelectorViewState(
                         entry.getKey(),
@@ -34,7 +34,10 @@ public class RoomSelectorViewModel extends ViewModel {
         });
     }
 
-    public LiveData<List<RoomSelectorViewState>> getRoomSelectorViewState() {
-        return roomSelectorViewState;
+    public LiveData<List<RoomSelectorViewState>> getRoomSelectorViewStateLiveData() {
+        return roomSelectorViewStateLiveData;
     }
+
+
+
 }

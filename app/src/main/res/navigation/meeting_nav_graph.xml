@@ -11,7 +11,9 @@
 
         <action
             android:id="@+id/action_fragmentListMeeting2_to_fragmentAddMeeting"
-            app:destination="@id/fragmentAddMeeting" />
+            app:destination="@id/fragmentAddMeeting"
+            app:enterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_down"/>
     </fragment>
 
     <fragment

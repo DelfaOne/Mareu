@@ -1,8 +1,10 @@
 package com.example.mareu.roomselector;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.AsyncDifferConfig;
@@ -27,6 +29,8 @@ public class RoomSelectorAdapter extends ListAdapter<RoomSelectorViewState, Room
             public boolean areContentsTheSame(@NonNull RoomSelectorViewState oldItem, @NonNull RoomSelectorViewState newItem) {
                 return oldItem.isSelected() == newItem.isSelected();            }
         });
+
+
     }
 
     @NonNull
@@ -55,6 +59,14 @@ public class RoomSelectorAdapter extends ListAdapter<RoomSelectorViewState, Room
         public void bind(RoomSelectorViewState item) {
             vb.roomSelectorCheckbox.setText(item.getRoomName());
             vb.roomSelectorCheckbox.setSelected(item.isSelected());
+            vb.roomSelectorCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                //TODO ViewModel
+            });
         }
+    }
+
+    public interface CheckedListener {
+
+        void onCheckedChange();
     }
 }
