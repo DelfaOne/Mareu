@@ -5,20 +5,17 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mareu.ViewModelFactory;
 import com.example.mareu.databinding.RoomSelectorItemBinding;
 
 public class RoomSelectorAdapter extends ListAdapter<RoomSelectorViewState, RoomSelectorAdapter.ViewHolder> {
 
     ViewHolder.OnCheckedListener onCheckedListener;
 
-    public RoomSelectorAdapter() {
+    public RoomSelectorAdapter(ViewHolder.OnCheckedListener onCheckedListener) {
         super(new DiffUtil.ItemCallback<RoomSelectorViewState>() {
             @Override
             public boolean areItemsTheSame(@NonNull RoomSelectorViewState oldItem, @NonNull RoomSelectorViewState newItem) {
@@ -27,18 +24,19 @@ public class RoomSelectorAdapter extends ListAdapter<RoomSelectorViewState, Room
 
             @Override
             public boolean areContentsTheSame(@NonNull RoomSelectorViewState oldItem, @NonNull RoomSelectorViewState newItem) {
-                return oldItem.isSelected() == newItem.isSelected();            }
+                return oldItem.isSelected() == newItem.isSelected();
+            }
         });
 
-
+        this.onCheckedListener = onCheckedListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RoomSelectorItemBinding itemListMeetingBinding = RoomSelectorItemBinding.inflate(LayoutInflater.from(parent.getContext()),
-                parent,
-                false);
+            parent,
+            false);
         return new RoomSelectorAdapter.ViewHolder(itemListMeetingBinding, onCheckedListener);
     }
 
@@ -64,14 +62,13 @@ public class RoomSelectorAdapter extends ListAdapter<RoomSelectorViewState, Room
             vb.roomSelectorCheckbox.setSelected(item.isSelected());
             vb.roomSelectorCheckbox.setChecked(item.isSelected());
             vb.roomSelectorCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                //onCheckedListener.onChecked(item.getRoomName());
-                Log.v("Checked: ", item.getRoomName());
+                onCheckedListener.onChecked(isChecked, item.getRoomName());
             });
 
         }
 
         public interface OnCheckedListener {
-            void onChecked(String name);
+            void onChecked(boolean checked, String name);
         }
     }
 }

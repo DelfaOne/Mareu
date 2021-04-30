@@ -1,16 +1,13 @@
-package com.example.mareu.service;
+package com.example.mareu.data;
 import androidx.lifecycle.LiveData;
 
 import com.example.mareu.repository.meeting.Meeting;
 
 import java.util.List;
-import java.util.Map;
 
-public interface MeetingApiService {
+public interface MeetingDataStore {
 
-    LiveData<List<Meeting>> getMeetings();
-
-    LiveData<Map<String, Boolean>> getRooms();
+    LiveData<List<Meeting>> getMeetingsLiveData();
 
     void deleteMeeting(int id);
 

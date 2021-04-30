@@ -1,12 +1,10 @@
-package com.example.mareu.service;
+package com.example.mareu.data;
 
 import com.example.mareu.repository.meeting.Meeting;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class DummyMeetingGenerator {

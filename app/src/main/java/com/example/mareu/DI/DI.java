@@ -1,19 +1,30 @@
 package com.example.mareu.DI;
 
-import com.example.mareu.service.DummyMeetingApiService;
-import com.example.mareu.service.MeetingApiService;
+import com.example.mareu.data.DummyMeetingDataStore;
+import com.example.mareu.data.MeetingDataStore;
+import com.example.mareu.repository.room.RoomRepository;
+
 /**
  * Dependency injector to get instance of services
  */
 public class DI {
     //TODO type DummyNeighbourApiService
-    private static MeetingApiService service = new DummyMeetingApiService();
+    private static final MeetingDataStore sMeetingDataStore = new DummyMeetingDataStore();
+    private static final RoomRepository sRoomRepository = new RoomRepository();
 
-    public static MeetingApiService getNeighbourApiService() {
-        return service;
+    public static MeetingDataStore getNeighbourApiService() {
+        return sMeetingDataStore;
     }
 
-    public static MeetingApiService getNewInstanceApiService() {
-        return new DummyMeetingApiService();
+    public static MeetingDataStore getNewInstanceApiService() {
+        return new DummyMeetingDataStore();
+    }
+
+    public static RoomRepository getRoomRepository() {
+        return sRoomRepository;
+    }
+
+    public static RoomRepository getNewInstanceRoomRepository() {
+        return new RoomRepository();
     }
 }
