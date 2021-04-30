@@ -26,8 +26,6 @@ import java.time.ZoneOffset;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddMeetingViewModelTest extends TestCase {
-    /*Mockito.when(meetingRepository.getMeeting())
-                .thenReturn(Arrays.asList());*/
     @Mock
     MeetingRepository meetingRepository;
 
@@ -78,19 +76,18 @@ public class AddMeetingViewModelTest extends TestCase {
     @Test
     public void shouldDisplayErrorOnEmptySubject() {
         //GIVEN
-        String subjectEmpty = "";
+        String subjectEmpty = null;
         Resources mockResources = Mockito.mock(Resources.class);
         Mockito.doReturn("subjectError").when(mockResources).getString(R.string.error_subject_missing);
         Mockito.doReturn(mockResources).when(application).getResources();
 
         //WHEN
         addMeetingViewModel.onSubjectChange(subjectEmpty);
-        addMeetingViewModel.onButtonAddClick();
 
         //THEN
         addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
             final AddMeetingViewState expected = new AddMeetingViewState(
-                    "",
+                    null,
                     "subjectError",
                     null,
                     null,
@@ -165,7 +162,7 @@ public class AddMeetingViewModelTest extends TestCase {
         Mockito.verifyNoMoreInteractions(meetingRepository);
     }
 
-   /* @Test
+   @Test
     public void verifyOnLocationChange() {
         //GIVEN
         final Observer<AddMeetingViewState> observer = Mockito.mock(Observer.class);
@@ -178,23 +175,6 @@ public class AddMeetingViewModelTest extends TestCase {
         //THEN
         Mockito.verify(observer).onChanged(Mockito.argThat(argument -> {
             return argument.getLocation().equals(location);
-        }));
-    }
-
-    @Test
-    public void verifyOnDateChange() {
-        //GIVEN
-        final Observer<AddMeetingViewState> observer = Mockito.mock(Observer.class);
-        long date = 161602;
-        String readableDate = "18 mars 2021";
-        addMeetingViewModel.viewStateLiveData.observeForever(observer);
-
-        //WHEN
-        addMeetingViewModel.onDateChange(date);
-
-        //THEN
-        Mockito.verify(observer).onChanged(Mockito.argThat(argument -> {
-            return argument.getDate().equals(readableDate);
         }));
     }
 
@@ -230,7 +210,7 @@ public class AddMeetingViewModelTest extends TestCase {
         Mockito.verify(observer).onChanged(Mockito.argThat(argument -> {
             return argument.getEmail().equals(email);
         }));
-    }*/
+    }
 
 
 }

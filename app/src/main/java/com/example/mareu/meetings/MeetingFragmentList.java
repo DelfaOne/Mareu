@@ -95,7 +95,7 @@ public class MeetingFragmentList extends Fragment {
 
         vb.meetingRecyclerview.setAdapter(meetingRecyclerViewAdapter);
 
-        vb.addNeighbourBtn.setOnClickListener(v -> { Navigation.findNavController(v).navigate(R.id.action_fragmentListMeeting2_to_fragmentAddMeeting);
+        vb.addMeeting.setOnClickListener(v -> { Navigation.findNavController(v).navigate(R.id.action_fragmentListMeeting2_to_fragmentAddMeeting);
         });
     }
 }
