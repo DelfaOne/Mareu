@@ -1,6 +1,7 @@
 package com.example.mareu.roomselector;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.mareu.ViewModelFactory;
 import com.example.mareu.databinding.RoomSelectorFragmentBinding;
-import com.example.mareu.meetings.MeetingViewModel;
 
 import java.util.List;
 
@@ -22,31 +22,33 @@ public class RoomSelectorDialogFragment extends DialogFragment implements RoomSe
 
     private RoomSelectorFragmentBinding vb;
 
+    private RoomSelectorViewModel vm;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        RoomSelectorViewModel vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(RoomSelectorViewModel.class);
+        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(RoomSelectorViewModel.class);
 
         vb = RoomSelectorFragmentBinding.inflate(getLayoutInflater());
 
-        RoomSelectorAdapter roomSelectorAdapter = new RoomSelectorAdapter();
+        RoomSelectorAdapter roomSelectorAdapter = new RoomSelectorAdapter(this);
         vb.roomSelectorRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         vb.roomSelectorRecyclerView.setAdapter(roomSelectorAdapter);
 
         vm.getRoomSelectorViewStateLiveData().observe(
-                this,
-                new Observer<List<RoomSelectorViewState>>() {
-                    @Override
-                    public void onChanged(List<RoomSelectorViewState> roomSelectorViewStates) {
-                        roomSelectorAdapter.submitList(roomSelectorViewStates);
-                    }
+            this,
+            new Observer<List<RoomSelectorViewState>>() {
+                @Override
+                public void onChanged(List<RoomSelectorViewState> roomSelectorViewStates) {
+                    roomSelectorAdapter.submitList(roomSelectorViewStates);
                 }
+            }
         );
         return vb.getRoot();
     }
 
     @Override
-    public void onChecked(String roomName) {
-
+    public void onChecked(boolean isChecked, String roomName) {
+        vm.onCheckedChange(isChecked, roomName);
     }
 }

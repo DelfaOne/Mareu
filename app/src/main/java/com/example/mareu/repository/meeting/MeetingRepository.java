@@ -3,17 +3,16 @@ package com.example.mareu.repository.meeting;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import com.example.mareu.meetings.MeetingViewState;
-import com.example.mareu.service.MeetingApiService;
+import com.example.mareu.data.MeetingDataStore;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class MeetingRepository {
 
-    private MeetingApiService apiService;
+    private MeetingDataStore apiService;
 
-    public MeetingRepository(MeetingApiService apiService) {
+    public MeetingRepository(MeetingDataStore apiService) {
         this.apiService = apiService;
     }
 
@@ -32,7 +31,7 @@ public class MeetingRepository {
     }
 
     public LiveData<List<Meeting>> getMeetings() {
-        return apiService.getMeetings();
+        return apiService.getMeetingsLiveData();
     }
 
 }

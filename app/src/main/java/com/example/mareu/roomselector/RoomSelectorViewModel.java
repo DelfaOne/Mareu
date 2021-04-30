@@ -19,19 +19,12 @@ public class RoomSelectorViewModel extends ViewModel {
 
     @NonNull
     private final RoomRepository roomRepository;
-    private LiveData<List<RoomSelectorViewState>> roomSelectorViewStateLiveData; //Liste des rooms pour l'adapter
-
-    private final MutableLiveData<List<RoomSelectorViewState>> _viewStateLiveData = new MutableLiveData<>();
-    public final LiveData<List<RoomSelectorViewState>> viewStateLiveData = _viewStateLiveData;
-
-    private String roomName;
-
-    private  boolean isSelected;
+    private final LiveData<List<RoomSelectorViewState>> roomSelectorViewStateLiveData; //Liste des rooms pour l'adapter
 
     public RoomSelectorViewModel(@NonNull RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
 
-        this.roomSelectorViewStateLiveData = Transformations.map(roomRepository.getRooms(), roomSelectedMap -> {
+        this.roomSelectorViewStateLiveData = Transformations.map(roomRepository.getRoomsLiveData(), roomSelectedMap -> {
             List<RoomSelectorViewState> roomsList = new ArrayList<>();
 
             for (Map.Entry<String, Boolean> entry : roomSelectedMap.entrySet()) {
@@ -44,25 +37,12 @@ public class RoomSelectorViewModel extends ViewModel {
         });
     }
 
-
-
     public LiveData<List<RoomSelectorViewState>> getRoomSelectorViewStateLiveData() {
         return roomSelectorViewStateLiveData;
     }
 
-    public void onCheckedChange(boolean isSelected) {
-
-        roomSelectorViewStateLiveData = Transformations.map(roomRepository.getRooms(), roomSelectedMap -> {
-            List<RoomSelectorViewState> roomsList = new ArrayList<>();
-
-            for (Map.Entry<String, Boolean> entry : roomSelectedMap.entrySet()) {
-                roomsList.add(new RoomSelectorViewState(
-                        entry.getKey(),
-                        entry.setValue(isSelected)
-                ));
-            }
-            return roomsList;
-        });
+    public void onCheckedChange(boolean isChecked, String roomName) {
+        roomRepository.toggleRoomChecked(isChecked, roomName);
     }
 
     /*public void onLocationChoiceSelected(String itemsSelected) {

@@ -31,9 +31,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
                     factory = new ViewModelFactory(
-                            new MeetingRepository(DI.getNeighbourApiService()),
-                            Clock.systemDefaultZone(),
-                            new RoomRepository(DI.getNeighbourApiService())
+                        new MeetingRepository(DI.getNeighbourApiService()),
+                        Clock.systemDefaultZone(),
+                        DI.getRoomRepository()
                     );
                 }
             }
@@ -46,7 +46,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MeetingViewModel.class)) {
-            return (T) new MeetingViewModel(meetingRepository, MainApplication.getsApplication());
+            return (T) new MeetingViewModel(MainApplication.getsApplication(), meetingRepository, roomRepository);
         } else if (modelClass.isAssignableFrom(AddMeetingViewModel.class)) {
             return (T) new AddMeetingViewModel(meetingRepository, MainApplication.getsApplication(), clock);
         } else if (modelClass.isAssignableFrom(RoomSelectorViewModel.class)) {
