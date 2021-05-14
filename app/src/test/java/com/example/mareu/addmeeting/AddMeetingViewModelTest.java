@@ -1,7 +1,6 @@
 package com.example.mareu.addmeeting;
 
 import android.app.Application;
-import android.content.res.Resources;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
@@ -46,94 +45,6 @@ public class AddMeetingViewModelTest extends TestCase {
     }
 
     @Test
-    public void verifyOnSubjectChange() {
-        //GIVEN
-        String subject = "Toto";
-
-
-        //WHEN
-        addMeetingViewModel.onSubjectChange(subject);
-        addMeetingViewModel.viewStateLiveData.observeForever(new Observer<AddMeetingViewState>() {
-            @Override
-            public void onChanged(AddMeetingViewState addMeetingViewState) {
-                //THEN
-                final AddMeetingViewState expected = new AddMeetingViewState(
-                        "Toto",
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null
-                );
-                assertEquals(expected, addMeetingViewState);
-            }
-        });
-    }
-
-    @Test
-    public void shouldDisplayErrorOnEmptySubject() {
-        //GIVEN
-        String subjectEmpty = null;
-        Resources mockResources = Mockito.mock(Resources.class);
-        Mockito.doReturn("subjectError").when(mockResources).getString(R.string.error_subject_missing);
-        Mockito.doReturn(mockResources).when(application).getResources();
-
-        //WHEN
-        addMeetingViewModel.onSubjectChange(subjectEmpty);
-
-        //THEN
-        addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
-            final AddMeetingViewState expected = new AddMeetingViewState(
-                    null,
-                    "subjectError",
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-            );
-            //Check state
-            assertEquals(expected, addMeetingViewState);
-
-        });
-    }
-
-    @Test
-    public void shouldDisplayErrorWhenDateIsBeforeActualDate() {
-        //GIVEN
-        long incorrectDate = 1612275107000L;
-
-        Resources mockResources = Mockito.mock(Resources.class);
-        Mockito.doReturn("dateError").when(mockResources).getString(R.string.error_date_missing);
-        Mockito.doReturn(mockResources).when(application).getResources();
-
-        //WHEN
-        addMeetingViewModel.onDateChange(incorrectDate);
-        addMeetingViewModel.onButtonAddClick();
-
-        //THEN
-        addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
-            final AddMeetingViewState expected = new AddMeetingViewState(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    "dateError",
-                    null,
-                    null,
-                    null
-            );
-            assertEquals(expected, addMeetingViewState);
-        });
-    }
-
-    @Test
     public void nominalCase_addNewMeeting() {
         //GIVEN
         String subject = "subject";
@@ -162,7 +73,32 @@ public class AddMeetingViewModelTest extends TestCase {
         Mockito.verifyNoMoreInteractions(meetingRepository);
     }
 
-   @Test
+    @Test
+    public void verifyOnSubjectChange() {
+        //GIVEN
+        String subject = "Toto";
+
+
+        //WHEN
+        addMeetingViewModel.onSubjectChange(subject);
+        addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
+            //THEN
+            final AddMeetingViewState expected = new AddMeetingViewState(
+                    "Toto",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            assertEquals(expected, addMeetingViewState);
+        });
+    }
+
+    @Test
     public void verifyOnLocationChange() {
         //GIVEN
         final Observer<AddMeetingViewState> observer = Mockito.mock(Observer.class);
@@ -210,6 +146,144 @@ public class AddMeetingViewModelTest extends TestCase {
         Mockito.verify(observer).onChanged(Mockito.argThat(argument -> {
             return argument.getEmail().equals(email);
         }));
+    }
+
+    @Test
+    public void shouldDisplaySubjectErrorWhenSubjectIsEmpty() {
+        //GIVEN
+        String emptySubject = null;
+        Mockito.doReturn("subjectError").when(application).getString(R.string.error_subject_missing);
+
+        //WHEN
+        addMeetingViewModel.onSubjectChange(emptySubject);
+
+        //THEN
+        addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
+            final AddMeetingViewState expected = new AddMeetingViewState(
+                    null,
+                    "subjectError",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            //Check state
+            assertEquals(expected, addMeetingViewState);
+
+        });
+    }
+
+    @Test
+    public void shouldDisplayDateErrorWhenDateIsEmpty() {
+        //GIVEN
+        Long emptyDate = null;
+        Mockito.doReturn("dateError").when(application).getString(R.string.error_date_missing);
+
+        //WHEN
+        addMeetingViewModel.onDateChange(emptyDate);
+
+        //THEN
+        addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
+            final AddMeetingViewState expected = new AddMeetingViewState(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    "dateError",
+                    null,
+                    null,
+                    null
+            );
+            //Check state
+            assertEquals(expected, addMeetingViewState);
+        });
+    }
+
+    @Test
+    public void shouldDisplayTimeErrorWhenTimeIsEmpty() {
+        //GIVEN
+        int incorrectHour = 24;
+        int incorrectMinute = 60;
+        Mockito.doReturn("dateError").when(application).getString(R.string.error_date_missing);
+
+        //WHEN
+        addMeetingViewModel.onTimeChange(incorrectHour, incorrectMinute);
+
+        //THEN
+        addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
+            final AddMeetingViewState expected = new AddMeetingViewState(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    "dateError",
+                    null,
+                    null,
+                    null
+            );
+            //Check state
+            assertEquals(expected, addMeetingViewState);
+        });
+    }
+
+    @Test
+    public void shouldDisplayEmailErrorWhenEmailIsEmpty() {
+        //GIVEN
+        String emptyEmail = null;
+        Mockito.doReturn("emailMissing").when(application).getString(R.string.error_email_missing);
+
+        //WHEN
+        addMeetingViewModel.onSubjectChange(emptyEmail);
+
+        //THEN
+        addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
+            final AddMeetingViewState expected = new AddMeetingViewState(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    "emailMissing"
+            );
+            //Check state
+            assertEquals(expected, addMeetingViewState);
+
+        });
+    }
+
+    @Test
+    public void shouldDisplayErrorWhenDateIsBeforeActualDate() {
+        //GIVEN
+        long incorrectDate = 1612275107000L; //02/02/2021 - 15:11:47
+        Mockito.doReturn("dateError").when(application).getString(R.string.error_date_missing);
+
+        //WHEN
+        addMeetingViewModel.onDateChange(incorrectDate);
+        addMeetingViewModel.onButtonAddClick();
+
+        //THEN
+        addMeetingViewModel.viewStateLiveData.observeForever(addMeetingViewState -> {
+            final AddMeetingViewState expected = new AddMeetingViewState(
+                    null,
+                    null,
+                    null,
+                    null,
+                    "02 02 2021",
+                    "dateError",
+                    null,
+                    null,
+                    null
+            );
+            assertEquals(expected, addMeetingViewState);
+        });
     }
 
 

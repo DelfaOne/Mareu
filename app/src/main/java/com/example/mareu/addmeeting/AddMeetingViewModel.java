@@ -1,10 +1,12 @@
 package com.example.mareu.addmeeting;
+
 import android.app.Application;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.example.mareu.R;
 import com.example.mareu.repository.meeting.MeetingRepository;
 
@@ -23,14 +25,22 @@ public class AddMeetingViewModel extends ViewModel {
     private final MutableLiveData<AddMeetingViewState> _viewStateLiveData = new MutableLiveData<>();
     public final LiveData<AddMeetingViewState> viewStateLiveData = _viewStateLiveData;
 
+    private final MutableLiveData<Boolean> _canAdd = new MutableLiveData<>();
+    public final LiveData<Boolean> canAdd = _canAdd;
+
+    @Nullable
     private String subject;
 
-    private  String location;
+    @Nullable
+    private String location;
 
+    @Nullable
     private LocalDate date;
 
+    @Nullable
     private LocalTime time;
 
+    @Nullable
     private String email;
 
 
@@ -38,6 +48,8 @@ public class AddMeetingViewModel extends ViewModel {
         this.meetingRepository = meetingRepository;
         this.application = application;
         this.clock = clock;
+
+        controlAdd();
     }
 
     public void onSubjectChange(String subject) {
@@ -51,13 +63,16 @@ public class AddMeetingViewModel extends ViewModel {
     }
 
     public void onDateChange(Long epoch) {
-        System.out.println("Epoch :" + epoch);
-        this.date = LocalDateTime.ofEpochSecond(epoch / 1000, 0, ZoneOffset.UTC).toLocalDate();
+        if (epoch != null) {
+            this.date = LocalDateTime.ofEpochSecond(epoch / 1000, 0, ZoneOffset.UTC).toLocalDate();
+        }
         controlInput();
     }
 
     public void onTimeChange(int hour, int minute) {
-        this.time = LocalTime.of(hour, minute);
+        if (hour <= 23 && minute <= 59) {
+            this.time = LocalTime.of(hour, minute);
+        }
         controlInput();
     }
 
@@ -67,24 +82,26 @@ public class AddMeetingViewModel extends ViewModel {
     }
 
     public void onButtonAddClick() {
-        meetingRepository.addMeetingItem(
-                subject,
-                location,
-                convertDate(),
-                email
-        );
+        if(controlInput()) {
+            meetingRepository.addMeetingItem(
+                    subject,
+                    location,
+                    convertDate(),
+                    email
+            );
+        }
     }
 
     private LocalDateTime convertDate() {
         return LocalDateTime.of(date, time);
     }
 
-    private void controlInput() {
+    private boolean controlInput() {
         String subjectError = null;
         String dateError = null;
         String locationError = null;
         String emailError = null;
-        //TODO Test
+
         if (subject == null || subject.isEmpty()) {
             subjectError = application.getString(R.string.error_subject_missing);
         }
@@ -102,11 +119,13 @@ public class AddMeetingViewModel extends ViewModel {
         String readableTime = null;
 
         if (date != null) {
-            readableDate  = DateTimeFormatter.ofPattern("dd MM yyyy").format(date);
+            readableDate = DateTimeFormatter.ofPattern("dd MM yyyy").format(date);
         }
         if (time != null) {
             readableTime = DateTimeFormatter.ofPattern("HH:mm").format(time);
         }
+
+        controlAdd();
 
         _viewStateLiveData.setValue(new AddMeetingViewState(
                 subject,
@@ -118,5 +137,16 @@ public class AddMeetingViewModel extends ViewModel {
                 readableTime,
                 email,
                 emailError));
+
+        return subjectError == null && dateError == null && locationError == null && emailError == null;
+    }
+
+    private void controlAdd() {
+        _canAdd.setValue(subject != null
+                && date != null
+                && time != null
+                && location != null
+                && email != null
+        );
     }
 }

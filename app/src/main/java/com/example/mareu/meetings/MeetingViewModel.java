@@ -96,7 +96,6 @@ public class MeetingViewModel extends ViewModel {
         for (Map.Entry<String, Boolean> roomCheckedEntry : roomCheckedMap.entrySet()) {
             if (roomCheckedEntry.getValue() != null && roomCheckedEntry.getValue()) {
                 isAtLeastOneRoomSelected = true;
-                break;
             }
         }
 
@@ -166,12 +165,12 @@ public class MeetingViewModel extends ViewModel {
     }
 
     private MeetingViewState map(Meeting meeting) {
-        String title = application.getResources().getString(
+        String title = application.getString(
             R.string.meeting_title,
             meeting.getReunionSubject(),
             formatDateTime(meeting.getDate())
         );
-        String roomName = application.getResources().getString(
+        String roomName = application.getString(
             R.string.room_name,
             meeting.getLieu()
         );

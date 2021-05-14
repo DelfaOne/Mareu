@@ -16,13 +16,16 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.mareu.R;
 import com.example.mareu.databinding.FragmentAddMeetingBinding;
 import com.example.mareu.ViewModelFactory;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,14 +34,16 @@ import com.google.android.material.timepicker.TimeFormat;
 
 import java.util.Calendar;
 
-public class AddMeetingFragment extends Fragment {
+public class AddMeetingFragment extends BottomSheetDialogFragment {
     private FragmentAddMeetingBinding vb;
     private boolean isRefreshing;
+    private AddMeetingViewModel vm;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vb = FragmentAddMeetingBinding.inflate(inflater, container, false);
+        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(AddMeetingViewModel.class);
         init();
         View view = vb.getRoot();
         setHasOptionsMenu(true);
@@ -58,16 +63,28 @@ public class AddMeetingFragment extends Fragment {
     }
 
     private void init() {
-        AddMeetingViewModel vm = new ViewModelProvider(this, ViewModelFactory.getInstance())
-                .get(AddMeetingViewModel.class);
+        setupObserver();
+        setupView();
+    }
 
+    private void setupObserver() {
+        vm.viewStateLiveData.observe(getViewLifecycleOwner(), this::setMeetingViewState);
+        vm.canAdd.observe(getViewLifecycleOwner(), this::showAddButton);
+    }
+
+    private void showAddButton(Boolean isClickable) {
+            vb.addBtn.setEnabled(isClickable);
+
+    }
+
+    private void setupView() {
         //Subject
-       setTextChange(vb.subjectEdit,vm);
+        setTextChange(vb.subjectEdit,vm);
+
         //Location
         vb.locationMenu.setAdapter(new ArrayAdapter<>(requireContext(), R.layout.list_item, getResources().getStringArray(R.array.location)));
         setTextChange(vb.locationMenu, vm);
-        //Mail
-        setTextChange(vb.mailEdit, vm);
+
 
         //Date
         vb.dateEdit.setOnClickListener(v -> {
@@ -75,6 +92,7 @@ public class AddMeetingFragment extends Fragment {
             materialDatePicker.addOnPositiveButtonClickListener(vm::onDateChange);
             materialDatePicker.show(getParentFragmentManager(), "Date Picker");
         });
+
         //Time
         vb.timeEdit.setOnClickListener(v -> {
             MaterialTimePicker.Builder builder = new MaterialTimePicker.Builder();
@@ -87,10 +105,12 @@ public class AddMeetingFragment extends Fragment {
             });
         });
 
-        vm.viewStateLiveData.observe(getViewLifecycleOwner(), this::setMeetingViewState);
+        //Mail
+        setTextChange(vb.mailEdit, vm);
+
         //AddButton
         vb.addBtn.setOnClickListener(v -> {
-           vm.onButtonAddClick();
+            vm.onButtonAddClick();
             NavHostFragment.findNavController(this).navigate(R.id.action_fragmentAddMeeting_pop_including_fragmentListMeeting2);
         });
     }

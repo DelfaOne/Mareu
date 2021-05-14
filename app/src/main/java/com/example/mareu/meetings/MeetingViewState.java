@@ -5,6 +5,8 @@ import android.graphics.Color;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 
+import java.util.Objects;
+
 public class MeetingViewState {
 
     private final int id;
@@ -46,5 +48,33 @@ public class MeetingViewState {
 
     public int getAvatarColor() {
         return avatarColor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MeetingViewState that = (MeetingViewState) o;
+        return id == that.id &&
+                avatarColor == that.avatarColor &&
+                title.equals(that.title) &&
+                roomName.equals(that.roomName) &&
+                participants.equals(that.participants);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, roomName, participants, avatarColor);
+    }
+
+    @Override
+    public String toString() {
+        return "MeetingViewState{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", roomName='" + roomName + '\'' +
+                ", participants='" + participants + '\'' +
+                ", avatarColor=" + avatarColor +
+                '}';
     }
 }

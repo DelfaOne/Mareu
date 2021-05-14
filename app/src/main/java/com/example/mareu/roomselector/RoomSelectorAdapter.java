@@ -1,6 +1,5 @@
 package com.example.mareu.roomselector;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -35,8 +34,8 @@ public class RoomSelectorAdapter extends ListAdapter<RoomSelectorViewState, Room
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RoomSelectorItemBinding itemListMeetingBinding = RoomSelectorItemBinding.inflate(LayoutInflater.from(parent.getContext()),
-            parent,
-            false);
+                parent,
+                false);
         return new RoomSelectorAdapter.ViewHolder(itemListMeetingBinding, onCheckedListener);
     }
 

@@ -10,18 +10,16 @@ import java.util.Map;
 public abstract class DummyMeetingGenerator {
 
     public static void fillDummyMeeting(ArrayList<Meeting> arrayListMeeting) {
-        arrayListMeeting.add(new Meeting(1, "Réunion A", "Peach", LocalDateTime.now().plusDays(1), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(2, "Réunion B", "Mario", LocalDateTime.now().plusDays(2), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(3, "Réunion C", "Wario", LocalDateTime.now().plusDays(3), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(4, "Réunion D", "Bowser", LocalDateTime.now().plusDays(4), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(5, "Réunion E", "Luigi", LocalDateTime.now().plusDays(5), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(6, "Réunion F", "Peach", LocalDateTime.now().plusDays(6), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(7, "Réunion G", "Mario", LocalDateTime.now().plusDays(7), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(8, "Réunion H", "Wario", LocalDateTime.now().plusDays(8), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(9, "Réunion I", "Bowser", LocalDateTime.now().plusDays(9), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(10, "Réunion J", "Luigi", LocalDateTime.now().plusDays(10), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(11, "Réunion K", "Peach", LocalDateTime.now().plusDays(11), "maxime@lamzone, fadel@foudi"));
-        arrayListMeeting.add(new Meeting(12, "Réunion L", "Mario", LocalDateTime.now().plusDays(12), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(0, "Réunion A", "Peach", getInitialDate().plusDays(1), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(1, "Réunion B", "Mario", getInitialDate().plusDays(2), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(2, "Réunion C", "Wario", getInitialDate().plusDays(3), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(3, "Réunion D", "Bowser", getInitialDate().plusDays(4), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(4, "Réunion E", "Luigi", getInitialDate().plusDays(5), "maxime@lamzone, fadel@foudi"));
+        arrayListMeeting.add(new Meeting(5, "Réunion F", "Peach", getInitialDate().plusDays(6), "maxime@lamzone, fadel@foudi"));
+    }
+
+    private static LocalDateTime getInitialDate() {
+        return LocalDateTime.of(2021, 4, 1, 12, 30);
     }
 
     public static Map<String, Boolean> getRooms() {
