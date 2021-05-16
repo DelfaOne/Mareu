@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class RoomSelectorViewModelTest extends TestCase {
     }
 
     @Test
-    public void verifyOnCheckedChange() throws InterruptedException {
+    public void nominalCaseOnCheckedChange() throws InterruptedException {
         roomSelectorViewModel = setupRoomSelectorViewModel();
         //GIVEN
         String roomName = "Peach";
@@ -55,10 +56,41 @@ public class RoomSelectorViewModelTest extends TestCase {
         roomSelectorViewModel.onCheckedChange(isChecked, roomName);
         List<RoomSelectorViewState> result = getOrAwaitValue(roomSelectorViewModel.getRoomSelectorViewStateLiveData());
 
-        assertEquals(
-                new RoomSelectorViewState(roomName, isChecked),
-                result.get(0)
-        );
+        List<RoomSelectorViewState> expected = new ArrayList<>();
+
+        expected.add(new RoomSelectorViewState("Bowser", false));
+        expected.add(new RoomSelectorViewState("Luigi", false));
+        expected.add(new RoomSelectorViewState("Mario", false));
+        expected.add(new RoomSelectorViewState("Peach", false));
+        expected.add(new RoomSelectorViewState("Wario", false));
+
+        assertEquals(expected, result);
+
+        Mockito.verify(roomRepository).getRoomsLiveData();
+        Mockito.verify(roomRepository).toggleRoomChecked(isChecked, roomName);
+    }
+
+    @Test
+    public void OnCheckedChange() throws InterruptedException {
+        //GIVEN
+        HashMap<String, Boolean> roomCheckedMap = new HashMap<>(DummyMeetingGenerator.getRooms());
+        roomCheckedMap.put("Peach", true);
+
+        roomCheckedLiveData.setValue(roomCheckedMap);
+        roomSelectorViewModel = setupRoomSelectorViewModel();
+
+        //WHEN
+        List<RoomSelectorViewState> result = getOrAwaitValue(roomSelectorViewModel.getRoomSelectorViewStateLiveData());
+
+        List<RoomSelectorViewState> expected = new ArrayList<>();
+
+        expected.add(new RoomSelectorViewState("Bowser", false));
+        expected.add(new RoomSelectorViewState("Luigi", false));
+        expected.add(new RoomSelectorViewState("Mario", false));
+        expected.add(new RoomSelectorViewState("Peach", true));
+        expected.add(new RoomSelectorViewState("Wario", false));
+
+        assertEquals(expected, result);
     }
 
     private RoomSelectorViewModel setupRoomSelectorViewModel() {

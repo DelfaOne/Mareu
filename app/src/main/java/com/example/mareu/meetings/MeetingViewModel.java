@@ -40,7 +40,6 @@ public class MeetingViewModel extends ViewModel {
     private final MeetingRepository meetingRepository;
 
     private final MediatorLiveData<List<MeetingViewState>> meetingViewStateMediatorLiveData = new MediatorLiveData<>();
-    private final MutableLiveData<Boolean> isSortingStateAscendantLiveData = new MutableLiveData<>();
     private final MutableLiveData<Pair<Long, Long>> dateRangeLiveData = new MutableLiveData<>();
 
     public MeetingViewModel(
@@ -55,22 +54,18 @@ public class MeetingViewModel extends ViewModel {
         LiveData<Map<String, Boolean>> roomCheckedMapLiveData = roomRepository.getRoomsLiveData();
 
         meetingViewStateMediatorLiveData.addSource(meetingsLiveData, meetings -> {
-            combine(meetings, isSortingStateAscendantLiveData.getValue(), dateRangeLiveData.getValue(), roomCheckedMapLiveData.getValue());
-        });
-        meetingViewStateMediatorLiveData.addSource(isSortingStateAscendantLiveData, isSortingStateAscendant -> {
-            combine(meetingsLiveData.getValue(), isSortingStateAscendant, dateRangeLiveData.getValue(), roomCheckedMapLiveData.getValue());
+            combine(meetings, dateRangeLiveData.getValue(), roomCheckedMapLiveData.getValue());
         });
         meetingViewStateMediatorLiveData.addSource(dateRangeLiveData, dateRange -> {
-            combine(meetingsLiveData.getValue(), isSortingStateAscendantLiveData.getValue(), dateRange, roomCheckedMapLiveData.getValue());
+            combine(meetingsLiveData.getValue(), dateRange, roomCheckedMapLiveData.getValue());
         });
         meetingViewStateMediatorLiveData.addSource(roomCheckedMapLiveData, roomCheckedMap -> {
-            combine(meetingsLiveData.getValue(), isSortingStateAscendantLiveData.getValue(), dateRangeLiveData.getValue(), roomCheckedMap);
+            combine(meetingsLiveData.getValue(), dateRangeLiveData.getValue(), roomCheckedMap);
         });
     }
 
     private void combine(
         @Nullable List<Meeting> meetings,
-        @Nullable Boolean isSortingStateAscendant,
         @Nullable Pair<Long, Long> dateRange,
         @Nullable Map<String, Boolean> roomCheckedMap) {
         if (meetings == null || roomCheckedMap == null) {
@@ -78,14 +73,6 @@ public class MeetingViewModel extends ViewModel {
         }
 
         List<MeetingViewState> results = new ArrayList<>();
-
-        if (isSortingStateAscendant != null) {
-            if (isSortingStateAscendant) { //
-                Collections.sort(meetings, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
-            } else {
-                Collections.sort(meetings, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
-            }
-        }
 
         boolean isDateRangeSelected = false;
         if (dateRange != null && (dateRange.first != null || dateRange.second != null)) {
@@ -149,15 +136,6 @@ public class MeetingViewModel extends ViewModel {
 
     public void onDateRangeSelected(Pair<Long, Long> selectedDate) {
         dateRangeLiveData.setValue(selectedDate);
-    }
-
-    public void onDateSortingButtonSelected() {
-        Boolean previousValue = isSortingStateAscendantLiveData.getValue();
-        if (previousValue == null) {
-            isSortingStateAscendantLiveData.setValue(true);
-        } else {
-            isSortingStateAscendantLiveData.setValue(!previousValue);
-        }
     }
 
     public LiveData<List<MeetingViewState>> getMeetingViewStateLiveData() {

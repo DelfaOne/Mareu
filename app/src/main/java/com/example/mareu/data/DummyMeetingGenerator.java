@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public abstract class DummyMeetingGenerator {
 
@@ -22,8 +23,8 @@ public abstract class DummyMeetingGenerator {
         return LocalDateTime.of(2021, 4, 1, 12, 30);
     }
 
-    public static Map<String, Boolean> getRooms() {
-        Map<String, Boolean> roomMap = new HashMap<>();
+    public static TreeMap<String, Boolean> getRooms() {
+        TreeMap<String, Boolean> roomMap = new TreeMap<>();
         roomMap.put("Peach", false);
         roomMap.put("Mario", false);
         roomMap.put("Wario", false);

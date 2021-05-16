@@ -14,9 +14,6 @@
             <item
                 android:id="@+id/menu_filter_room"
                 android:title="@string/filtrer_par_pi_ces" />
-            <item
-                android:id="@+id/menu_show_all"
-                android:title="@string/show_all" />
         </menu>
     </item>
 

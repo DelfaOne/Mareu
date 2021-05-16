@@ -6,9 +6,10 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.mareu.data.DummyMeetingGenerator;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 public class RoomRepository {
-    private final Map<String, Boolean> roomCheckedMap = DummyMeetingGenerator.getRooms();
+    private final TreeMap<String, Boolean> roomCheckedMap = DummyMeetingGenerator.getRooms();
 
     private final MutableLiveData<Map<String, Boolean>> roomListLiveData = new MutableLiveData<>(roomCheckedMap);
 

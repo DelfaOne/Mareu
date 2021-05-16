@@ -3,10 +3,14 @@ package com.example.mareu;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.example.mareu.data.DummyMeetingGenerator;
 import com.example.mareu.utils.DeleteViewAction;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
@@ -20,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -29,7 +34,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.mareu.utils.RecyclerViewItemCountAssertion.withItemCount;
 
@@ -41,8 +48,7 @@ import static com.example.mareu.utils.RecyclerViewItemCountAssertion.withItemCou
 @RunWith(AndroidJUnit4.class)
 public class MeetingInstrumentedTest {
 
-    private static int TOTAL_MEETING = 12;
-    private final Calendar calendar = Calendar.getInstance();
+    private static int TOTAL_MEETING = 6;
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityScenarioRule = new ActivityScenarioRule<>(MainActivity.class);
@@ -74,7 +80,7 @@ public class MeetingInstrumentedTest {
      * Verify correctly add a meeting with correct text
      */
     @Test
-    public void shouldAddMeetingWithCorrectText() {
+    public void shouldAddMeetingWithCorrectText() throws InterruptedException {
         // Given
         onView(withId(R.id.add_meeting))
                 .perform(click());
@@ -82,21 +88,22 @@ public class MeetingInstrumentedTest {
                 .perform(replaceText("Test Subject"));
         onView(withId(R.id.location_menu))
                 .perform(replaceText("Peach"));
-        onView(withId(R.id.date_edit))
-                .perform(replaceText("2021-05-08"));
-        onView(withId(R.id.time_edit))
-                .perform(replaceText("20:30"));
         onView(withId(R.id.mail_edit))
-                .perform(replaceText("Test Participant"));
-
+                .perform(replaceText("Testparticipant"));
+        //Date
+        onView(withId(R.id.date_edit)).perform(click());
+        onView(withClassName(Matchers.equalTo(MaterialDatePicker.class.getName()))).perform(PickerActions.setDate(2021, 06, 16));
+        Thread.sleep(100000);
         // When
         onView(withId(R.id.addBtn))
                 .perform(click());
 
 
 
-        /*//Then
-        onView(Matchers.allOf(withId(R.id.meeting_recyclerview), isDisplayed()))
+
+
+        //Then
+       /* onView(Matchers.allOf(withId(R.id.meeting_recyclerview), isDisplayed()))
                 .check(withItemCount(TOTAL_MEETING + 1));
 
         onView(Matchers.allOf(withId(R.id.meeting_title),  isDisplayed()))
@@ -127,7 +134,8 @@ public class MeetingInstrumentedTest {
                 .perform(click());
         onView(withText("Filtrer par date"))
                 .perform(click());
-        onView(withClassName()).perform(PickerActions.setDate(2017, 6, 30));
+        onView(withClassName(Matchers.equalTo(MaterialDatePicker.class.getName())))
+                .perform(PickerActions.setDate(2017, 6, 30));
 
     }
 
@@ -137,8 +145,40 @@ public class MeetingInstrumentedTest {
                 .perform(click());
         onView(withText("Filtrer par pièces"))
                 .perform(click());
-        onView(withId(R.id.room_selector_recycler_view))
+//        onView(withId(R.id.room_selector_recycler_view))
 
+    }
+
+    private void pickBirthDate(Date date) {
+        // Click year selector button to open year selection view
+        onView(withId(R.id.month_navigation_fragment_toggle)).perform(click())
+
+        // Scroll to year
+        ViewInteraction yearGrid = onView(withRecyclerView(R.id.mtrl_calendar_year_selector_frame)).check(matches(isDisplayed()));
+        yearGrid.perform(scrollTo< RecyclerView.ViewHolder>(withText(SimpleDateFormat("y", currentLocale).format(birthdate))))
+
+        // Click the year
+        onView(withText(SimpleDateFormat("y", currentLocale).format(birthdate))).perform(click())
+
+        // Scroll to month
+        val monthGrid = onView(withRecyclerView(R.id.mtrl_calendar_months))
+        monthGrid.perform(scrollTo<RecyclerView.ViewHolder>(
+                withChild(withText(SimpleDateFormat("MMMM, y", currentLocale).format(birthdate))))
+        )
+
+        // TODO: Simplify this (using MaterialTextViewMatcher class?)
+        // Click day of month
+        onView(
+                allOf(
+                        withParent(withClassName(equalTo("com.google.android.material.datepicker.MaterialCalendarGridView"))),
+                        withClassName(equalTo("com.google.android.material.textview.MaterialTextView")),
+                        // isDescendantOfA(withRecyclerView(R.id.mtrl_calendar_months)),
+                        withText(SimpleDateFormat("d", currentLocale).format(birthdate)),
+                        isDisplayed()
+                )
+        ).perform(click())
+
+        onView(withId(R.id.confirm_button)).perform(click())
     }
 
 

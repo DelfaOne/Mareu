@@ -68,10 +68,6 @@ public class MeetingFragmentList extends Fragment {
                 onRoomFilterSelected();
                 break;
             }
-            case R.id.menu_show_all : {
-                vm.onDateSortingButtonSelected();
-                break;
-            }
             default: return super.onOptionsItemSelected(item);
         }
         return true;
