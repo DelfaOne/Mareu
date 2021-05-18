@@ -99,9 +99,6 @@ public class MeetingInstrumentedTest {
                 .perform(click());
 
 
-
-
-
         //Then
        /* onView(Matchers.allOf(withId(R.id.meeting_recyclerview), isDisplayed()))
                 .check(withItemCount(TOTAL_MEETING + 1));
@@ -148,41 +145,4 @@ public class MeetingInstrumentedTest {
 //        onView(withId(R.id.room_selector_recycler_view))
 
     }
-
-    private void pickBirthDate(Date date) {
-        // Click year selector button to open year selection view
-        onView(withId(R.id.month_navigation_fragment_toggle)).perform(click())
-
-        // Scroll to year
-        ViewInteraction yearGrid = onView(withRecyclerView(R.id.mtrl_calendar_year_selector_frame)).check(matches(isDisplayed()));
-        yearGrid.perform(scrollTo< RecyclerView.ViewHolder>(withText(SimpleDateFormat("y", currentLocale).format(birthdate))))
-
-        // Click the year
-        onView(withText(SimpleDateFormat("y", currentLocale).format(birthdate))).perform(click())
-
-        // Scroll to month
-        val monthGrid = onView(withRecyclerView(R.id.mtrl_calendar_months))
-        monthGrid.perform(scrollTo<RecyclerView.ViewHolder>(
-                withChild(withText(SimpleDateFormat("MMMM, y", currentLocale).format(birthdate))))
-        )
-
-        // TODO: Simplify this (using MaterialTextViewMatcher class?)
-        // Click day of month
-        onView(
-                allOf(
-                        withParent(withClassName(equalTo("com.google.android.material.datepicker.MaterialCalendarGridView"))),
-                        withClassName(equalTo("com.google.android.material.textview.MaterialTextView")),
-                        // isDescendantOfA(withRecyclerView(R.id.mtrl_calendar_months)),
-                        withText(SimpleDateFormat("d", currentLocale).format(birthdate)),
-                        isDisplayed()
-                )
-        ).perform(click())
-
-        onView(withId(R.id.confirm_button)).perform(click())
-    }
-
-
-
-
-
 }
