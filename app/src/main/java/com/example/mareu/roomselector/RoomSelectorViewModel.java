@@ -19,7 +19,7 @@ public class RoomSelectorViewModel extends ViewModel {
     @NonNull
     private final RoomRepository roomRepository;
 
-    public final LiveData<List<RoomSelectorViewState>> roomSelectorViewStateLiveData; //List des rooms pour l'adapter
+    public final LiveData<List<RoomSelectorViewState>> roomSelectorViewStateLiveData;
 
     public RoomSelectorViewModel(@NonNull RoomRepository roomRepository) {
         this.roomRepository = roomRepository;

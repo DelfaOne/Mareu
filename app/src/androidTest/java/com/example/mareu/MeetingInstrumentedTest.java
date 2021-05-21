@@ -175,17 +175,15 @@ public class MeetingInstrumentedTest {
         Thread.sleep(1000);
         onView(allOf(withId(R.id.meeting_recyclerview), isDisplayed()))
                 .check(withItemCount(4));
-        reset();
-
     }
 
     /**
      * Verify display correct numbers of meetings when meetings are filter by room
      */
     @Test
-    public void myNeighboursList_filterByRoom_shouldDisplayCorrectMeetings() throws InterruptedException {
+    public void myNeighboursList_filterByRoom_shouldDisplayCorrectMeetings(){
         //WHEN
-        onView(allOf(withId(R.id.menu_overflow_button_create_meeting)))
+        onView(withId(R.id.menu_overflow_button_create_meeting))
                 .perform(click());
         onView(withText("Filtrer par pièces"))
                 .perform(click());
@@ -198,7 +196,6 @@ public class MeetingInstrumentedTest {
         //THEN
         onView(allOf(withId(R.id.meeting_recyclerview), isDisplayed()))
                 .check(withItemCount(2));
-        reset();
     }
 
     private void reset() throws InterruptedException {

@@ -16,15 +16,7 @@ public class DI {
         return sMeetingDataStore;
     }
 
-    public static MeetingDataStore getNewInstanceApiService() {
-        return new DummyMeetingDataStore();
-    }
-
     public static RoomRepository getRoomRepository() {
         return sRoomRepository;
-    }
-
-    public static RoomRepository getNewInstanceRoomRepository() {
-        return new RoomRepository();
     }
 }
