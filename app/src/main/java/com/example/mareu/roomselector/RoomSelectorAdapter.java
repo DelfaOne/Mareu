@@ -55,13 +55,13 @@ public class RoomSelectorAdapter extends ListAdapter<RoomSelectorViewState, Room
         }
 
         public void bind(RoomSelectorViewState item, OnCheckedListener onCheckedListener) {
+            vb.roomSelectorCheckbox.setOnCheckedChangeListener(null);
             vb.roomSelectorCheckbox.setText(item.getRoomName());
             vb.roomSelectorCheckbox.setSelected(item.isSelected());
             vb.roomSelectorCheckbox.setChecked(item.isSelected());
             vb.roomSelectorCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 onCheckedListener.onChecked(isChecked, item.getRoomName());
             });
-
         }
 
         public interface OnCheckedListener {
