@@ -73,6 +73,8 @@ public class MeetingInstrumentedTest {
         // Given
         onView(withId(R.id.add_meeting))
                 .perform(click());
+
+        //When
         //Subject
         onView(withId(R.id.subject_edit))
                 .perform(replaceText("Test"));
@@ -99,19 +101,9 @@ public class MeetingInstrumentedTest {
         onView(withId(R.id.mail_edit))
                 .perform(replaceText("Testparticipant"));
 
-       /* // When
-        onView(withId(R.id.addBtn))
-                .perform(click());*/
-
         //Then
         onView(withId(R.id.addBtn))
                 .check(matches(isEnabled()));
-
-       /* onView(Matchers.allOf(withId(R.id.meeting_recyclerview), isDisplayed()))
-                .check(withItemCount(TOTAL_MEETING + 1));
-
-        onView(Matchers.allOf(withId(R.id.meeting_title),  isDisplayed()))
-                .check(matches(withText("Test Subject")));*/
     }
 
     /**
@@ -135,7 +127,7 @@ public class MeetingInstrumentedTest {
      * When we delete an item, the item is no more shown
      */
     @Test
-    public void myNeighboursList_deleteAction_shouldRemoveItem() throws InterruptedException {
+    public void myNeighboursList_deleteAction_shouldRemoveItem() {
         // Given
         onView(allOf(withId(R.id.meeting_recyclerview), isDisplayed()))
                 .check(withItemCount(TOTAL_MEETING));
@@ -147,7 +139,6 @@ public class MeetingInstrumentedTest {
         // Then
         onView(allOf(withId(R.id.meeting_recyclerview), isDisplayed()))
                 .check(withItemCount(TOTAL_MEETING - 1));
-        reset();
     }
 
     /**
@@ -181,7 +172,7 @@ public class MeetingInstrumentedTest {
      * Verify display correct numbers of meetings when meetings are filter by room
      */
     @Test
-    public void myNeighboursList_filterByRoom_shouldDisplayCorrectMeetings(){
+    public void myNeighboursList_filterByRoom_shouldDisplayCorrectMeetings() {
         //WHEN
         onView(withId(R.id.menu_overflow_button_create_meeting))
                 .perform(click());
@@ -196,10 +187,5 @@ public class MeetingInstrumentedTest {
         //THEN
         onView(allOf(withId(R.id.meeting_recyclerview), isDisplayed()))
                 .check(withItemCount(2));
-    }
-
-    private void reset() throws InterruptedException {
-        activityScenarioRule.getScenario().close();
-        Thread.sleep(3000);
     }
 }

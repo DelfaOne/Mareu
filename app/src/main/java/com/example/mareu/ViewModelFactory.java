@@ -31,9 +31,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
                     factory = new ViewModelFactory(
-                        new MeetingRepository(DI.getNeighbourApiService()),
-                        Clock.systemDefaultZone(),
-                        DI.getRoomRepository()
+                            new MeetingRepository(DI.getNeighbourApiService()),
+                            Clock.systemDefaultZone(),
+                            DI.getRoomRepository()
                     );
                 }
             }
