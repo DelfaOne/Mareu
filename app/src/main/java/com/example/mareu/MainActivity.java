@@ -1,39 +1,38 @@
 package com.example.mareu;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.TaskStackBuilder;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+
+import com.example.mareu.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ActivityMainBinding vb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        vb = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = vb.getRoot();
+        setContentView(view);
+    }
 
-        TextView myTxtView = findViewById(R.id.txt_view);
-        Button myBtn = findViewById(R.id.btn);
-
-        MeetingViewModel meetingViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance())
-                .get(MeetingViewModel.class);
-
-        myBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                meetingViewModel.onButtonPressed();
-            }
-        });
-
-        meetingViewModel.getVIewStateLiveData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String value) {
-                myTxtView.setText(value);
-            }
-        });
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

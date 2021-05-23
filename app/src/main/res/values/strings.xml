@@ -1,3 +1,48 @@
 <resources>
+    <!--Add meeting texts-->
     <string name="app_name">MaReu</string>
+    <string name="subject_title">1$ - 2$ - 3$</string>
+    <string name="date">Date</string>
+    <string name="lieu">Lieu</string>
+    <string name="sujet">Sujet</string>
+    <string name="email">Email</string>
+    <string name="ajouter">AJOUTER</string>
+
+    <!--Errors-->
+    <string name="error_subject_missing">Please add a subject</string>
+    <string name="error_location_missing">Please add a location</string>
+    <string name="error_date_missing">Please add a correct date</string>
+    <string name="error_date_before_actual">Please enter a correct date your date is older than the current date</string>
+    <string name="error_email_missing">Please add a email</string>
+    <string name="liste_des_participants">Liste des participants</string>
+
+    <!--Filter-->
+    <string name="filtrer_par_date">Filtrer par date</string>
+    <string name="filtrer_par_pi_ces">Filtrer par pièces</string>
+    <string name="show_all">Afficher toutes les réunions</string>
+    <string name="heure">Heure</string>
+    <string name="select_location">Sélectionner un lieu</string>
+    <string name="positive_button">OK</string>
+    <string name="negative_button">RETOUR</string>
+
+    <!--Locations-->
+    <string-array name="location">
+        <item>Peach</item>
+        <item>Mario</item>
+        <item>Wario</item>
+        <item>Bowser</item>
+        <item>Luigi</item>
+    </string-array>
+
+    <!--Colors-->
+    <string-array name="color">
+        <item>#FF0088</item>
+        <item>#4CAF50</item>
+        <item>#3F51B5</item>
+        <item>#FFEB3B</item>
+        <item>#F44336</item>
+    </string-array>
+
+    <string name="meeting_title">%s - %s</string>
+    <string name="room_name">Salle %s</string>
 </resources>

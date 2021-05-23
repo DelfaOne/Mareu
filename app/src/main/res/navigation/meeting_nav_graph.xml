@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/meeting_nav_graph"
+    app:startDestination="@id/fragmentListMeeting2">
+
+    <fragment
+        android:id="@+id/fragmentListMeeting2"
+        android:name="com.example.mareu.meetings.MeetingFragmentList"
+        android:label="FragmentListMeeting" >
+
+        <action
+            android:id="@+id/action_fragmentListMeeting2_to_fragmentAddMeeting"
+            app:destination="@id/fragmentAddMeeting"
+            app:enterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_down"/>
+    </fragment>
+
+    <dialog
+        android:id="@+id/fragmentAddMeeting"
+        android:name="com.example.mareu.addmeeting.AddMeetingFragment"
+        android:label="FragmentAddMeeting" >
+        <action
+            android:id="@+id/action_fragmentAddMeeting_pop_including_fragmentListMeeting2"
+            app:destination="@id/fragmentListMeeting2"/>
+    </dialog>
+</navigation>

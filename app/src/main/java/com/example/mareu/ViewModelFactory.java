@@ -4,15 +4,26 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.mareu.repository.SingleStringRepo;
+import com.example.mareu.DI.DI;
+import com.example.mareu.addmeeting.AddMeetingViewModel;
+import com.example.mareu.meetings.MeetingViewModel;
+import com.example.mareu.repository.meeting.MeetingRepository;
+import com.example.mareu.repository.room.RoomRepository;
+import com.example.mareu.roomselector.RoomSelectorViewModel;
+
+import java.time.Clock;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private static ViewModelFactory factory;
-    private final SingleStringRepo singleStringRepo;
+    private final MeetingRepository meetingRepository;
+    private final RoomRepository roomRepository;
+    private final Clock clock;
 
-    private ViewModelFactory(SingleStringRepo singleStringRepo) {
-        this.singleStringRepo = singleStringRepo;
+    private ViewModelFactory(MeetingRepository meetingRepository, Clock clock, RoomRepository roomRepository) {
+        this.meetingRepository = meetingRepository;
+        this.clock = clock;
+        this.roomRepository = roomRepository;
     }
 
     public static ViewModelFactory getInstance() {
@@ -20,12 +31,13 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
                     factory = new ViewModelFactory(
-                            new SingleStringRepo()
+                            new MeetingRepository(DI.getNeighbourApiService()),
+                            Clock.systemDefaultZone(),
+                            DI.getRoomRepository()
                     );
                 }
             }
         }
-
         return factory;
     }
 
@@ -34,7 +46,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MeetingViewModel.class)) {
-            return (T) new MeetingViewModel(singleStringRepo);
+            return (T) new MeetingViewModel(MainApplication.getsApplication(), meetingRepository, roomRepository);
+        } else if (modelClass.isAssignableFrom(AddMeetingViewModel.class)) {
+            return (T) new AddMeetingViewModel(meetingRepository, MainApplication.getsApplication(), clock);
+        } else if (modelClass.isAssignableFrom(RoomSelectorViewModel.class)) {
+            return (T) new RoomSelectorViewModel(roomRepository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
