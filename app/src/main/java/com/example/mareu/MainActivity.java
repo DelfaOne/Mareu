@@ -27,12 +27,4 @@ public class MainActivity extends AppCompatActivity {
         View view = vb.getRoot();
         setContentView(view);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

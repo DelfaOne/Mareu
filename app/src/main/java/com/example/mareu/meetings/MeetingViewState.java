@@ -1,7 +1,5 @@
 package com.example.mareu.meetings;
 
-import android.graphics.Color;
-
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 
