@@ -17,7 +17,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:src="@mipmap/ic_launcher" />
+            tools:src="@mipmap/ic_launcher"
+            android:contentDescription="@string/meeting_title_content_description" />
 
         <TextView
             android:id="@+id/meeting_title"
@@ -59,7 +60,8 @@
             android:src="@drawable/ic_delete_24px"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/delete_meeting_content_description" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

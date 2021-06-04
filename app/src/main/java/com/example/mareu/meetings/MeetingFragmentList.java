@@ -1,5 +1,6 @@
 package com.example.mareu.meetings;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,11 +24,6 @@ import com.example.mareu.ViewModelFactory;
 import com.example.mareu.databinding.FragmentListMeetingBinding;
 import com.example.mareu.roomselector.RoomSelectorDialogFragment;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class MeetingFragmentList extends Fragment {
 
@@ -42,8 +38,7 @@ public class MeetingFragmentList extends Fragment {
         vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
         setupView();
         setHasOptionsMenu(true);
-        View view = vb.getRoot();
-        return view;
+        return vb.getRoot();
     }
 
     @Override
@@ -57,18 +52,20 @@ public class MeetingFragmentList extends Fragment {
         inflater.inflate(R.menu.top_app_bar, menu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_filter_date : {
+            case R.id.menu_filter_date: {
                 onDateFilterSelected();
                 break;
             }
-            case R.id.menu_filter_room : {
+            case R.id.menu_filter_room: {
                 onRoomFilterSelected();
                 break;
             }
-            default: return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
         return true;
     }
@@ -91,7 +88,8 @@ public class MeetingFragmentList extends Fragment {
 
         vb.meetingRecyclerview.setAdapter(meetingRecyclerViewAdapter);
 
-        vb.addMeeting.setOnClickListener(v -> { Navigation.findNavController(v).navigate(R.id.action_fragmentListMeeting2_to_fragmentAddMeeting);
+        vb.addMeeting.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_fragmentListMeeting2_to_fragmentAddMeeting);
         });
     }
 }

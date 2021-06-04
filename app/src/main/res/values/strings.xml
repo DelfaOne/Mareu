@@ -45,4 +45,9 @@
 
     <string name="meeting_title">%s - %s</string>
     <string name="room_name">Salle %s</string>
+
+    <!--Content description-->
+    <string name="add_meeting_content_description">Ajout d\'une réunion</string>
+    <string name="meeting_title_content_description">Titre de la réunion</string>
+    <string name="delete_meeting_content_description">Supprimer la réunion</string>
 </resources>

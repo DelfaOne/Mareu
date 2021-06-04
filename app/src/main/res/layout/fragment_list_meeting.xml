@@ -20,6 +20,7 @@
         android:id="@+id/add_meeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_group_add_white_36dp"/>
+        app:srcCompat="@drawable/ic_group_add_white_36dp"
+        android:contentDescription="@string/add_meeting_content_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

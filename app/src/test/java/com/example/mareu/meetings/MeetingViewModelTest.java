@@ -2,7 +2,6 @@ package com.example.mareu.meetings;
 
 import android.app.Application;
 
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.core.util.Pair;
 import androidx.lifecycle.MutableLiveData;
@@ -23,7 +22,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

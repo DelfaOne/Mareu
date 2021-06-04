@@ -1,38 +1,29 @@
 package com.example.mareu.addmeeting;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.mareu.R;
-import com.example.mareu.databinding.FragmentAddMeetingBinding;
 import com.example.mareu.ViewModelFactory;
+import com.example.mareu.databinding.FragmentAddMeetingBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
-
-import java.util.Calendar;
 
 public class AddMeetingFragment extends BottomSheetDialogFragment {
     private FragmentAddMeetingBinding vb;
@@ -73,13 +64,13 @@ public class AddMeetingFragment extends BottomSheetDialogFragment {
     }
 
     private void showAddButton(Boolean isClickable) {
-            vb.addBtn.setEnabled(isClickable);
+        vb.addBtn.setEnabled(isClickable);
 
     }
 
     private void setupView() {
         //Subject
-        setTextChange(vb.subjectEdit,vm);
+        setTextChange(vb.subjectEdit, vm);
 
         //Location
         vb.locationMenu.setAdapter(new ArrayAdapter<>(requireContext(), R.layout.list_item, getResources().getStringArray(R.array.location)));
@@ -100,9 +91,7 @@ public class AddMeetingFragment extends BottomSheetDialogFragment {
                     .build();
             materialTimePicker.show(getParentFragmentManager(), "Time Picker");
 
-            materialTimePicker.addOnPositiveButtonClickListener(v1 -> {
-                vm.onTimeChange(materialTimePicker.getHour(), materialTimePicker.getMinute());
-            });
+            materialTimePicker.addOnPositiveButtonClickListener(v1 -> vm.onTimeChange(materialTimePicker.getHour(), materialTimePicker.getMinute()));
         });
 
         //Mail

@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -43,9 +42,9 @@ public class MeetingViewModel extends ViewModel {
     private final MutableLiveData<Pair<Long, Long>> dateRangeLiveData = new MutableLiveData<>();
 
     public MeetingViewModel(
-        @NonNull Application application,
-        @NonNull MeetingRepository meetingRepository,
-        @NonNull RoomRepository roomRepository
+            @NonNull Application application,
+            @NonNull MeetingRepository meetingRepository,
+            @NonNull RoomRepository roomRepository
     ) {
         this.meetingRepository = meetingRepository;
         this.application = application;
@@ -65,9 +64,9 @@ public class MeetingViewModel extends ViewModel {
     }
 
     private void combine(
-        @Nullable List<Meeting> meetings,
-        @Nullable Pair<Long, Long> dateRange,
-        @Nullable Map<String, Boolean> roomCheckedMap) {
+            @Nullable List<Meeting> meetings,
+            @Nullable Pair<Long, Long> dateRange,
+            @Nullable Map<String, Boolean> roomCheckedMap) {
         if (meetings == null || roomCheckedMap == null) {
             return;
         }
@@ -100,8 +99,8 @@ public class MeetingViewModel extends ViewModel {
     }
 
     private boolean isInDateRange(
-        @Nullable Pair<Long, Long> dateRange,
-        @NonNull Meeting meeting
+            @Nullable Pair<Long, Long> dateRange,
+            @NonNull Meeting meeting
     ) {
         boolean isInDateRange = false;
 
@@ -118,15 +117,15 @@ public class MeetingViewModel extends ViewModel {
     }
 
     private boolean isInRoomSelection(
-        @NonNull Map<String, Boolean> roomCheckedMap,
-        @NonNull Meeting meeting
+            @NonNull Map<String, Boolean> roomCheckedMap,
+            @NonNull Meeting meeting
     ) {
         boolean isInRoomSelection = false;
 
         for (Map.Entry<String, Boolean> roomCheckedEntry : roomCheckedMap.entrySet()) {
             if (meeting.getLieu().equals(roomCheckedEntry.getKey())
-                && roomCheckedEntry.getValue() != null
-                && roomCheckedEntry.getValue()) {
+                    && roomCheckedEntry.getValue() != null
+                    && roomCheckedEntry.getValue()) {
                 isInRoomSelection = true;
                 break;
             }
@@ -144,22 +143,22 @@ public class MeetingViewModel extends ViewModel {
 
     private MeetingViewState map(Meeting meeting) {
         String title = application.getString(
-            R.string.meeting_title,
-            meeting.getReunionSubject(),
-            formatDateTime(meeting.getDate())
+                R.string.meeting_title,
+                meeting.getReunionSubject(),
+                formatDateTime(meeting.getDate())
         );
         String roomName = application.getString(
-            R.string.room_name,
-            meeting.getLieu()
+                R.string.room_name,
+                meeting.getLieu()
         );
         @ColorRes int avatarColor = getColor(meeting.getLieu());
 
         return new MeetingViewState(
-            meeting.getId(),
-            title,
-            roomName,
-            meeting.getParticipants(),
-            avatarColor);
+                meeting.getId(),
+                title,
+                roomName,
+                meeting.getParticipants(),
+                avatarColor);
     }
 
     @ColorRes

@@ -82,7 +82,7 @@ public class AddMeetingViewModel extends ViewModel {
     }
 
     public void onButtonAddClick() {
-        if(controlInput()) {
+        if (controlInput()) {
             meetingRepository.addMeetingItem(
                     subject,
                     location,

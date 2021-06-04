@@ -63,15 +63,23 @@ public class AddMeetingViewState {
         return subjectError;
     }
 
-    public String getTime() { return time; }
+    public String getTime() {
+        return time;
+    }
 
     @Nullable
-    public String getLocationError() { return locationError; }
+    public String getLocationError() {
+        return locationError;
+    }
 
     @Nullable
-    public String getEmailError() { return emailError; }
+    public String getEmailError() {
+        return emailError;
+    }
 
-    public String getDateError() { return dateError; }
+    public String getDateError() {
+        return dateError;
+    }
 
     @Override
     public boolean equals(Object o) {

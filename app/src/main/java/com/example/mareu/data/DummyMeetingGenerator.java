@@ -4,8 +4,6 @@ import com.example.mareu.repository.meeting.Meeting;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 public abstract class DummyMeetingGenerator {
@@ -38,9 +36,6 @@ public abstract class DummyMeetingGenerator {
         fillDummyMeeting(arrayList);
         return arrayList;
     }
-
-
-
 
 
 }

@@ -1,11 +1,11 @@
 package com.example.mareu.data;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mareu.repository.meeting.Meeting;
 
 import java.util.List;
-import java.util.Map;
 
 public class DummyMeetingDataStore implements MeetingDataStore {
 
@@ -24,7 +24,7 @@ public class DummyMeetingDataStore implements MeetingDataStore {
     @Override
     public void deleteMeeting(int meetingId) {
         Meeting match = null;
-        for (Meeting meeting: meetingList) {
+        for (Meeting meeting : meetingList) {
             if (meeting.getId() == meetingId) {
                 match = meeting;
             }
